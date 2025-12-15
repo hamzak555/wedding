@@ -69,6 +69,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [autoOpenProgress, setAutoOpenProgress] = useState(0);
+  const [flowerTransform, setFlowerTransform] = useState({ rotate: 0, y: 0 });
   const weddingDate = new Date("2026-06-20T00:00:00");
   const { days, hours, minutes, seconds } = useCountdown(weddingDate);
 
@@ -124,6 +125,17 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 500);
+
+      // Animate fixed flowers based on scroll
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = scrollY / maxScroll;
+
+      // Rotate between -10 and 10 degrees, move up/down slightly
+      const rotate = Math.sin(scrollProgress * Math.PI * 4) * 10;
+      const y = Math.sin(scrollProgress * Math.PI * 2) * 30;
+
+      setFlowerTransform({ rotate, y });
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -155,6 +167,16 @@ export default function Home() {
 
   return (
     <>
+    <Image
+      src="/watercolor-peach-white-peony-bouquet-with-delicate-blooms.png"
+      alt="Decorative flowers"
+      width={300}
+      height={400}
+      className="fixed-flowers-left"
+      style={{
+        transform: `translateY(calc(-50% + ${flowerTransform.y}px)) rotate(${flowerTransform.rotate}deg)`,
+      }}
+    />
     <section className="cssletter">
       <h1 className="couple-names">Bogdana & Hamza</h1>
       <p className="wedding-date">JUNE 20, 2026</p>
