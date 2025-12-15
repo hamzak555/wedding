@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   title: "Bogdana & Hamza | Wedding Celebration",
   description: "Join us in celebrating the wedding of Bogdana and Hamza on June 20, 2026. We can't wait to share our special day with you!",
   metadataBase: new URL("https://bogdanahamza.com"),
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "Bogdana & Hamza | Wedding Celebration",
     description: "Join us in celebrating the wedding of Bogdana and Hamza on June 20, 2026.",
