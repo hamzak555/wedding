@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playwrite_NO, Parisienne } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -9,6 +9,17 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playwriteNO = Playwrite_NO({
+  variable: "--font-playwrite-no",
+  weight: ["100", "200", "300", "400"],
+});
+
+const parisienne = Parisienne({
+  variable: "--font-parisienne",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -25,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playwriteNO.variable} ${parisienne.variable} antialiased`}
       >
         {children}
       </body>
