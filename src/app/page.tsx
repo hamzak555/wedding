@@ -449,9 +449,9 @@ export default function Home() {
     <section className="section-how-we-met">
       <div className="how-we-met-container">
         <div className="how-we-met-content scroll-animate-left">
-          <h2 className="how-we-met-title">Ukraine to Canada to Pakistan</h2>
+          <h2 className="how-we-met-title">Ukraine to Canada</h2>
           <p className="how-we-met-text">
-            Our story began in the most unexpected way. What started as a chance encounter quickly blossomed into something beautiful. From our first conversation, we knew there was something special between us. Through laughter, adventures, and countless memories, we found our forever in each other.
+            Shortly after she made Canada her new home, our paths crossed and quickly became inseparable. What began as a simple connection grew into a life filled with adventure—traveling to new countries, building lasting friendships, and discovering a shared faith in Islam that shaped us in profound ways. Together, we faced challenges, celebrated milestones, and learned the true meaning of partnership. Every step of the journey led us here, grateful for the past and excited to begin this next chapter as husband and wife.
           </p>
         </div>
         <div className="how-we-met-polaroid-wrapper scroll-animate-right">
