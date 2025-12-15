@@ -2131,6 +2131,28 @@
   margin: 0;
 }
 
+.footer-dua {
+  font-size: 1.6rem;
+  color: white;
+  text-align: center;
+  opacity: 0.5;
+  margin: 1.5rem auto 0;
+  max-width: 90%;
+  line-height: 2;
+}
+
+.footer-dua-translation {
+  font-family: sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: white;
+  text-align: center;
+  opacity: 0.4;
+  margin: 0.5rem auto 0;
+  max-width: 80%;
+  line-height: 1.6;
+}
+
 .back-to-top {
   position: fixed;
   bottom: 2rem;

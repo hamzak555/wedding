@@ -451,7 +451,7 @@ export default function Home() {
         <div className="how-we-met-content scroll-animate-left">
           <h2 className="how-we-met-title">Ukraine to Canada</h2>
           <p className="how-we-met-text">
-            Shortly after she made Canada her new home, our paths crossed and quickly became inseparable. What began as a simple connection grew into a life filled with adventure—traveling to new countries, building lasting friendships, and discovering a shared faith in Islam that shaped us in profound ways. Together, we faced challenges, celebrated milestones, and learned the true meaning of partnership. Every step of the journey led us here, grateful for the past and excited to begin this next chapter as husband and wife.
+            Shortly after she made Canada her new home, our paths crossed and quickly became inseparable. What began as a simple connection grew into a life filled with adventure, traveling to new countries, building lasting friendships, and discovering a shared faith in Islam that shaped us in profound ways. Together, we faced challenges, celebrated milestones, and learned the true meaning of partnership. Every step of the journey led us here, grateful for the past and excited to begin this next chapter as husband and wife.
           </p>
         </div>
         <div className="how-we-met-polaroid-wrapper scroll-animate-right">
@@ -652,7 +652,9 @@ export default function Home() {
       />
       <h2 className="footer-names scroll-animate">Bogdana & Hamza</h2>
       <p className="footer-date scroll-animate scroll-animate-delay-1">June 20, 2026</p>
-      <a href="/login" className="footer-login-link scroll-animate scroll-animate-delay-2">Admin Login</a>
+      <p className="footer-dua scroll-animate scroll-animate-delay-2" dir="rtl" lang="ar">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
+      <p className="footer-dua-translation scroll-animate scroll-animate-delay-2">Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous.</p>
+      <a href="/login" className="footer-login-link scroll-animate scroll-animate-delay-3">Admin Login</a>
     </footer>
     {showBackToTop && (
       <button
