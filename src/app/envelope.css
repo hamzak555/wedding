@@ -1,8 +1,37 @@
 :root {
   --envelope-x: 300px;
   --envelope-y: 200px;
-  --envelope-bg: #f5e6d3;
-  --envelope-shadow: #d4c4b0;
+  --envelope-bg:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(255, 255, 255, 0.03) 1px,
+      rgba(255, 255, 255, 0.03) 2px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(0, 0, 0, 0.05) 1px,
+      rgba(0, 0, 0, 0.05) 2px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.02) 3px,
+      rgba(255, 255, 255, 0.02) 4px
+    ),
+    linear-gradient(135deg, #650203 0%, #4a0302 50%, #350502 100%);
+  --envelope-shadow: #1a0201;
   --letter-x: 250px;
   --letter-y: calc(250px - 1rem - 10px);
   --letter-bg: AntiqueWhite;
@@ -23,6 +52,30 @@
   }
 }
 
+/* Fixed RSVP button at top left */
+.fixed-rsvp-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 0.6rem 1.5rem;
+  background-color: #650203;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.fixed-rsvp-button:hover {
+  background-color: #4a0302;
+  transform: translateY(-2px);
+}
+
 /* Fixed decorative flowers on left side - desktop only */
 .fixed-flowers-left {
   display: none;
@@ -32,14 +85,15 @@
   .fixed-flowers-left {
     display: block;
     position: fixed;
-    left: -250px;
+    left: -130px;
     top: 50%;
-    width: 500px;
+    width: 320px;
     height: auto;
     z-index: 1000;
     pointer-events: none;
     opacity: 0.9;
     transition: transform 0.1s ease-out;
+    transform: scaleX(-1);
   }
 }
 
@@ -64,7 +118,7 @@
   font-family: var(--font-parisienne), cursive;
   font-size: 2.2rem;
   font-weight: 400;
-  color: white;
+  color: #650203;
   text-align: center;
   letter-spacing: 0.02em;
   margin: 0;
@@ -85,7 +139,7 @@
   font-family: sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: white;
+  color: #650203;
   text-align: center;
   letter-spacing: 0.2em;
   margin: 0;
@@ -104,7 +158,7 @@
   transform: translateX(-50%);
   display: flex;
   gap: 0.5rem;
-  color: white;
+  color: #650203;
 }
 
 .countdown-item {
@@ -113,10 +167,10 @@
   align-items: center;
   min-width: 50px;
   padding: 0.5rem 0.75rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(101, 2, 3, 0.1);
   backdrop-filter: blur(5px);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.2);
 }
 
 .countdown-value {
@@ -220,7 +274,7 @@
   width: var(--envelope-x);
   height: var(--envelope-y);
   background: var(--envelope-bg);
-  box-shadow: inset 0 0 30px -5px var(--envelope-shadow), 0 0 50vw 0 #5c604a;
+  box-shadow: inset 0 0 30px -5px var(--envelope-shadow);
   transform: translateY(-80px);
   transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: auto;
@@ -590,10 +644,10 @@
 
 .wax-seal {
   position: absolute;
-  top: -70px;
+  top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
+  width: 70px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
@@ -604,15 +658,15 @@
   }
 
   .wax-seal {
-    width: 180px;
-    top: -90px;
+    width: 90px;
+    top: -40px;
   }
 }
 
 .section-two-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin-top: 3rem;
   margin-bottom: 1rem;
@@ -621,7 +675,7 @@
 .section-two-text {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   max-width: 500px;
   line-height: 1.6;
@@ -636,7 +690,7 @@
 
   .section-two-text {
     font-size: 1.1rem;
-    max-width: 600px;
+    max-width: 750px;
   }
 }
 
@@ -644,8 +698,8 @@
   display: inline-block;
   margin-top: 2rem;
   padding: 0.75rem 2rem;
-  background-color: #f5e6d3;
-  color: #5c604a;
+  background-color: #650203;
+  color: #fff;
   font-family: sans-serif;
   font-size: 1rem;
   text-decoration: none;
@@ -656,7 +710,7 @@
 }
 
 .rsvp-link-button:hover {
-  background-color: #efe0cf;
+  background-color: #4a0302;
   transform: translateY(-2px);
 }
 
@@ -893,7 +947,7 @@
 .section-ceremony-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin: 0 0 0.75rem 0;
 }
@@ -901,7 +955,7 @@
 .section-ceremony-text {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   max-width: 500px;
   line-height: 1.6;
@@ -910,7 +964,7 @@
 }
 
 .address-link {
-  color: white;
+  color: #650203;
   text-decoration: underline;
   transition: opacity 0.2s ease;
 }
@@ -1133,7 +1187,7 @@
 .section-celebration-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin: 0 0 0.75rem 0;
 }
@@ -1141,7 +1195,7 @@
 .section-celebration-text {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   max-width: 500px;
   line-height: 1.6;
@@ -1172,7 +1226,7 @@
 .section-timeline-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin-bottom: 3rem;
 }
@@ -1197,7 +1251,7 @@
   font-family: sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
-  color: #f5e6d3;
+  color: #350502;
   letter-spacing: 0.05em;
   opacity: 0;
   animation: fadeIn 0.5s ease-out forwards;
@@ -1309,7 +1363,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, transparent, #f5e6d3 5%, #f5e6d3 95%, transparent);
+  background: linear-gradient(to right, transparent, #650203 5%, #650203 95%, transparent);
 }
 
 .timeline-dots {
@@ -1323,9 +1377,9 @@
 .timeline-dot {
   width: 16px;
   height: 16px;
-  background-color: #f5e6d3;
+  background-color: #650203;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(245, 230, 211, 0.3);
+  box-shadow: 0 0 0 4px rgba(101, 2, 3, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   opacity: 0;
   transform: scale(0);
@@ -1352,7 +1406,7 @@
 
 .timeline-dot:hover {
   transform: scale(1.3);
-  box-shadow: 0 0 0 6px rgba(245, 230, 211, 0.4);
+  box-shadow: 0 0 0 6px rgba(101, 2, 3, 0.4);
 }
 
 /* Icons and event names row */
@@ -1402,28 +1456,28 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.1);
   border-radius: 50%;
   padding: 10px;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .timeline-item:hover .timeline-icon {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(101, 2, 3, 0.2);
   transform: scale(1.1);
 }
 
 .timeline-icon img {
   width: 32px;
   height: 32px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) saturate(100%) invert(8%) sepia(70%) saturate(4000%) hue-rotate(350deg) brightness(70%);
 }
 
 .timeline-event {
   font-family: var(--font-parisienne), cursive;
   font-size: 1rem;
   font-weight: 400;
-  color: white;
+  color: #350502;
   margin: 0;
   line-height: 1.2;
 }
@@ -1431,7 +1485,7 @@
 .timeline-time {
   font-family: var(--font-lora), serif;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(53, 5, 2, 0.8);
   margin-top: 0.25rem;
   display: block;
 }
@@ -1571,7 +1625,7 @@
 .how-we-met-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2.5rem;
-  color: white;
+  color: #350502;
   margin: 0 0 1rem 0;
   white-space: nowrap;
 }
@@ -1579,7 +1633,7 @@
 .how-we-met-text {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   line-height: 1.8;
   opacity: 0.9;
   margin: 0;
@@ -1625,7 +1679,7 @@
 .section-venue-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin-bottom: 0.5rem;
 }
@@ -1633,7 +1687,7 @@
 .section-venue-text {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin-bottom: 1.5rem;
   opacity: 0.9;
@@ -1655,8 +1709,8 @@
   display: inline-block;
   margin-top: 1.5rem;
   padding: 0.75rem 2rem;
-  background-color: #f5e6d3;
-  color: #5c604a;
+  background-color: #650203;
+  color: #fff;
   font-family: sans-serif;
   font-size: 1rem;
   text-decoration: none;
@@ -1665,7 +1719,7 @@
 }
 
 .directions-button:hover {
-  background-color: #efe0cf;
+  background-color: #4a0302;
   transform: translateY(-2px);
 }
 
@@ -1711,19 +1765,19 @@
   pointer-events: none;
   flex-direction: column;
   align-items: center;
-  margin-left: -140px;
+  margin-left: -160px;
 }
 
 .rsvp-title-overlay {
   font-family: var(--font-parisienne), cursive;
   font-size: 8rem;
-  color: white;
+  color: #350502;
   margin: 0 0 -100px 0;
   text-align: center;
 }
 
 .rsvp-decoration {
-  width: 450px;
+  width: 480px;
   height: auto;
 }
 
@@ -1740,7 +1794,7 @@
 .section-rsvp-subtitle {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   opacity: 0.9;
   margin-bottom: 0;
@@ -1756,18 +1810,18 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(53, 5, 2, 0.1);
 }
 
 .rsvp-description {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(53, 5, 2, 0.85);
   line-height: 1.6;
   margin: 0;
 }
@@ -1788,7 +1842,7 @@
 .rsvp-field label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: white;
+  color: #350502;
   font-weight: 500;
 }
 
@@ -1797,23 +1851,23 @@
   padding: 0.875rem 1rem;
   font-family: sans-serif;
   font-size: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(255, 255, 255, 0.8);
+  color: #350502;
   backdrop-filter: blur(5px);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .rsvp-field input[type="text"]::placeholder,
 .rsvp-field input[type="email"]::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(53, 5, 2, 0.4);
 }
 
 .rsvp-field input[type="text"]:focus,
 .rsvp-field input[type="email"]:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(101, 2, 3, 0.5);
   background: rgba(255, 255, 255, 0.15);
 }
 
@@ -1828,9 +1882,9 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1842,17 +1896,17 @@
 .rsvp-radio span {
   font-family: sans-serif;
   font-size: 0.95rem;
-  color: white;
+  color: #350502;
 }
 
 .rsvp-radio:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(101, 2, 3, 0.3);
 }
 
 .rsvp-radio.selected {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: #f5e6d3;
+  background: rgba(101, 2, 3, 0.1);
+  border-color: #650203;
 }
 
 .rsvp-guests-section {
@@ -1870,7 +1924,7 @@
 .rsvp-guests-header label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: white;
+  color: #350502;
   font-weight: 500;
 }
 
@@ -1878,22 +1932,22 @@
   padding: 0.5rem 1rem;
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #350502;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .rsvp-add-guest:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(101, 2, 3, 0.3);
 }
 
 .rsvp-guest-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 10px;
   padding: 1rem;
   display: flex;
@@ -1910,7 +1964,7 @@
 .rsvp-guest-header span {
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: #f5e6d3;
+  color: #350502;
   font-weight: 500;
 }
 
@@ -1920,9 +1974,9 @@
   padding: 0;
   padding-bottom: 3px;
   font-size: 1.1rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #650203;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1942,8 +1996,8 @@
   font-family: sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: #5c604a;
-  background: #f5e6d3;
+  color: #fff;
+  background: #650203;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -1952,7 +2006,7 @@
 }
 
 .rsvp-submit:hover {
-  background: #efe0cf;
+  background: #4a0302;
   transform: translateY(-2px);
 }
 
@@ -1967,7 +2021,7 @@
 .rsvp-thank-you h3 {
   font-family: var(--font-parisienne), cursive;
   font-size: 4rem;
-  color: white;
+  color: #350502;
   margin: 0 0 1rem 0;
   text-align: center;
 }
@@ -1975,7 +2029,7 @@
 .rsvp-thank-you p {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   opacity: 0.9;
   margin: 0;
   text-align: center;
@@ -2021,7 +2075,7 @@
 .section-faq-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -2035,26 +2089,26 @@
 }
 
 .faq-item {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 16px;
   padding: 1.5rem 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(53, 5, 2, 0.08);
 }
 
 .faq-question {
   font-family: sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: #350502;
   margin: 0 0 0.5rem 0;
 }
 
 .faq-answer {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   opacity: 0.9;
   margin: 0;
   line-height: 1.6;
@@ -2076,7 +2130,7 @@
   flex-direction: column;
   align-items: center;
   padding: 3rem 2rem 4rem 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(101, 2, 3, 0.15);
   position: relative;
 }
 
@@ -2116,7 +2170,7 @@
 .footer-names {
   font-family: var(--font-parisienne), cursive;
   font-size: 2.5rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin: 0 0 0.5rem 0;
 }
@@ -2124,7 +2178,7 @@
 .footer-date {
   font-family: sans-serif;
   font-size: 1rem;
-  color: white;
+  color: #350502;
   text-align: center;
   letter-spacing: 0.15em;
   opacity: 0.9;
@@ -2133,7 +2187,7 @@
 
 .footer-dua {
   font-size: 1.6rem;
-  color: white;
+  color: #350502;
   text-align: center;
   opacity: 0.5;
   margin: 1.5rem auto 0;
@@ -2145,7 +2199,7 @@
   font-family: sans-serif;
   font-size: 0.85rem;
   font-style: italic;
-  color: white;
+  color: #350502;
   text-align: center;
   opacity: 0.4;
   margin: 0.5rem auto 0;
@@ -2160,21 +2214,21 @@
   width: 50px;
   height: 50px;
   padding: 0;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(101, 2, 3, 0.1);
   backdrop-filter: blur(5px);
-  color: white;
+  color: #350502;
   font-size: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(53, 5, 2, 0.1);
   transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   z-index: 100;
 }
 
 .back-to-top:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(101, 2, 3, 0.2);
+  border-color: rgba(101, 2, 3, 0.3);
   transform: translateY(-4px);
 }
 
@@ -2193,13 +2247,13 @@
   margin-top: 1.5rem;
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(53, 5, 2, 0.5);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-login-link:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(53, 5, 2, 0.8);
 }
 
 /* Login Page Styles */
@@ -2215,32 +2269,32 @@
 .login-container {
   width: 100%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 16px;
   padding: 2.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(53, 5, 2, 0.1);
 }
 
 .login-back-link {
   display: inline-block;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(53, 5, 2, 0.7);
   text-decoration: none;
   margin-bottom: 1.5rem;
   transition: color 0.2s ease;
 }
 
 .login-back-link:hover {
-  color: white;
+  color: #350502;
 }
 
 .login-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2.5rem;
-  color: white;
+  color: #350502;
   text-align: center;
   margin: 0 0 0.5rem 0;
 }
@@ -2248,7 +2302,7 @@
 .login-subtitle {
   font-family: sans-serif;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(53, 5, 2, 0.8);
   text-align: center;
   margin: 0 0 2rem 0;
 }
@@ -2278,7 +2332,7 @@
 .login-field label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: white;
+  color: #350502;
   font-weight: 500;
 }
 
@@ -2286,22 +2340,22 @@
   padding: 0.875rem 1rem;
   font-family: sans-serif;
   font-size: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(255, 255, 255, 0.8);
+  color: #350502;
   backdrop-filter: blur(5px);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .login-field input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(53, 5, 2, 0.4);
 }
 
 .login-field input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(101, 2, 3, 0.5);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .login-button {
@@ -2309,7 +2363,7 @@
   font-family: sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: #5c604a;
+  color: #4a0302;
   background: #f5e6d3;
   border: none;
   border-radius: 8px;
@@ -2348,7 +2402,7 @@
 .dashboard-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2.5rem;
-  color: white;
+  color: #350502;
   margin: 0;
 }
 
@@ -2356,9 +2410,9 @@
   padding: 0.5rem 1.25rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #350502;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2366,8 +2420,8 @@
 }
 
 .dashboard-logout:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(101, 2, 3, 0.3);
 }
 
 .dashboard-stats {
@@ -2379,9 +2433,9 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
@@ -2391,14 +2445,14 @@
   font-family: sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #f5e6d3;
+  color: #650203;
   margin: 0;
 }
 
 .stat-label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(53, 5, 2, 0.8);
   margin: 0.5rem 0 0 0;
 }
 
@@ -2417,7 +2471,7 @@
 .dashboard-section-title {
   font-family: var(--font-parisienne), cursive;
   font-size: 2rem;
-  color: white;
+  color: #350502;
   margin: 0;
 }
 
@@ -2433,23 +2487,23 @@
   padding: 0.6rem 1rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #350502;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(101, 2, 3, 0.2);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .export-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.7);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
 .rsvp-table-container {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(101, 2, 3, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(101, 2, 3, 0.15);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -2464,21 +2518,21 @@
   padding: 1rem 1.25rem;
   text-align: left;
   font-family: sans-serif;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(101, 2, 3, 0.1);
 }
 
 .rsvp-table th {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #f5e6d3;
+  color: #650203;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(101, 2, 3, 0.05);
 }
 
 .rsvp-table td {
   font-size: 0.95rem;
-  color: white;
+  color: #350502;
 }
 
 .rsvp-table tr:last-child td {
@@ -2486,12 +2540,12 @@
 }
 
 .rsvp-table tr:hover td {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(101, 2, 3, 0.05);
 }
 
 .guest-list {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(53, 5, 2, 0.8);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2502,14 +2556,14 @@
 }
 
 .guest-dietary {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(53, 5, 2, 0.6);
   font-style: italic;
 }
 
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(53, 5, 2, 0.7);
   font-family: sans-serif;
   font-size: 1rem;
 }
@@ -2517,7 +2571,7 @@
 .loading-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: white;
+  color: #350502;
   font-family: sans-serif;
   font-size: 1rem;
 }
@@ -2580,7 +2634,7 @@
 }
 
 .alert-dialog-content {
-  background: #5c604a;
+  background: #4a0302;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   padding: 1.5rem;
@@ -2814,7 +2868,7 @@
   font-family: sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #5c604a;
+  color: #4a0302;
   background: #f5e6d3;
   border: none;
   border-radius: 8px;
@@ -3013,13 +3067,16 @@
   }
 
   .wax-seal {
-    width: 80px;
-    top: -50px;
+    width: 45px;
+    top: -30px;
   }
 
   .section-two-title {
     font-size: 1.75rem;
     margin-top: 2rem;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .section-two-text {
@@ -3060,17 +3117,17 @@
   /* Show some ceremony decorations on mobile */
   .ceremony-decoration {
     display: block;
-    width: 60px;
+    width: 90px;
     left: 5%;
-    top: 5%;
+    top: -2%;
     opacity: 0.7;
   }
 
   .ceremony-decoration-right {
     display: block;
-    width: 50px;
+    width: 80px;
     right: 5%;
-    top: 8%;
+    top: 0%;
     opacity: 0.7;
   }
 

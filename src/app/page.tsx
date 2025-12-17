@@ -167,14 +167,20 @@ export default function Home() {
 
   return (
     <>
+    <button
+      className="fixed-rsvp-button"
+      onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
+    >
+      RSVP NOW
+    </button>
     <Image
-      src="/watercolor-peach-white-peony-bouquet-with-delicate-blooms.png"
+      src="/Flowers.png"
       alt="Decorative flowers"
       width={300}
       height={400}
       className="fixed-flowers-left"
       style={{
-        transform: `translateY(calc(-50% + ${flowerTransform.y}px)) rotate(${flowerTransform.rotate}deg)`,
+        transform: `translateY(calc(-50% + ${flowerTransform.y}px)) rotate(${flowerTransform.rotate}deg) scaleX(-1)`,
       }}
     />
     <section className="cssletter">
@@ -288,10 +294,10 @@ export default function Home() {
           className="postcard"
         />
         <Image
-          src="/rose-wax-seal-vector.png"
+          src="/Stamp.png"
           alt="Wax seal"
-          width={120}
-          height={120}
+          width={55}
+          height={55}
           className="wax-seal"
         />
       </div>
@@ -303,7 +309,7 @@ export default function Home() {
         className="rsvp-link-button scroll-animate scroll-animate-delay-3"
         onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        RSVP Now
+        RSVP NOW
       </button>
     </section>
     <section className="section-ceremonies">
@@ -443,7 +449,7 @@ export default function Home() {
         className="rsvp-link-button timeline-rsvp"
         onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        RSVP Now
+        RSVP NOW
       </button>
     </section>
     <section className="section-how-we-met">
@@ -483,7 +489,7 @@ export default function Home() {
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2873.8076!2d-79.0631!3d43.8701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4de9f5d3e3a5d%3A0x1234567890abcdef!2s2120%20Rosebank%20Rd%2C%20Pickering%2C%20ON%20L1X%200A1!5e0!3m2!1sen!2sca!4v1234567890"
           width="100%"
           height="400"
-          style={{ border: 0, filter: 'sepia(20%) hue-rotate(50deg) saturate(80%)' }}
+          style={{ border: 0, filter: 'sepia(15%) saturate(90%)' }}
           allowFullScreen
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -496,16 +502,15 @@ export default function Home() {
         rel="noopener noreferrer"
         className="directions-button"
       >
-        Get Directions
+        GET DIRECTIONS
       </a>
     </section>
     <section id="rsvp" className="section-rsvp">
       <div className="rsvp-box-wrapper scroll-animate-scale">
         <div className="rsvp-decoration-container rsvp-decoration-desktop">
-          <h2 className="rsvp-title-overlay">Rsvp</h2>
           <Image
-            src="/vintage-typewriter-with-floral-arrangement.png"
-            alt="Vintage typewriter with flowers"
+            src="/RSVP plate.png"
+            alt="RSVP plate"
             width={300}
             height={300}
             className="rsvp-decoration"
@@ -519,10 +524,9 @@ export default function Home() {
       ) : (
         <form className="rsvp-form" onSubmit={handleRsvpSubmit}>
           <div className="rsvp-decoration-container rsvp-decoration-mobile">
-            <h2 className="rsvp-title-overlay">Rsvp</h2>
             <Image
-              src="/vintage-typewriter-with-floral-arrangement.png"
-              alt="Vintage typewriter with flowers"
+              src="/RSVP plate.png"
+              alt="RSVP plate"
               width={300}
               height={300}
               className="rsvp-decoration"
@@ -598,7 +602,7 @@ export default function Home() {
                 ))}
               </div>
           <button type="submit" className="rsvp-submit" disabled={rsvpLoading}>
-            {rsvpLoading ? "Submitting..." : "Submit RSVP"}
+            {rsvpLoading ? "SUBMITTING..." : "SUBMIT RSVP"}
           </button>
         </form>
       )}
@@ -632,7 +636,7 @@ export default function Home() {
         className="rsvp-link-button faq-rsvp"
         onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        RSVP Now
+        RSVP NOW
       </button>
     </section>
     <footer className="footer">
