@@ -433,7 +433,7 @@ export default function Home() {
               />
 
               {[
-                { time: '3:00 PM', event: 'Mocktail' },
+                { time: '3:00 PM', event: 'Mocktail Hour' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
@@ -464,7 +464,7 @@ export default function Home() {
             <div className="flex justify-between mb-4">
               <div className="w-6" /> {/* Spacer for left icon */}
               {[
-                { time: '3:00 PM', event: 'Mocktail' },
+                { time: '3:00 PM', event: 'Mocktail Hour' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
@@ -498,7 +498,7 @@ export default function Home() {
 
                 <div className="flex justify-between w-full">
                   {[
-                    { time: '3:00 PM', event: 'Mocktail' },
+                    { time: '3:00 PM', event: 'Mocktail Hour' },
                     { time: '4:00 PM', event: 'Nikkah' },
                     { time: '5:00 PM', event: 'Cake Cutting' },
                     { time: '6:00 PM', event: 'Dinner' },
@@ -528,7 +528,7 @@ export default function Home() {
             <div className="flex justify-between mt-4">
               <div className="w-6" /> {/* Spacer for left icon */}
               {[
-                { time: '3:00 PM', event: 'Mocktail' },
+                { time: '3:00 PM', event: 'Mocktail Hour' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
@@ -602,7 +602,7 @@ export default function Home() {
                     className="underline hover:opacity-70"
                   >
                     2120 Rosebank Road, Pickering, ON, L1X 0A1
-                  </a>. We kindly ask guests to arrive by 3:00 PM for cocktail hour.
+                  </a>. We kindly ask guests to arrive by 3:00 PM for mocktail hour.
                 </p>
               </div>
 
