@@ -322,31 +322,31 @@ export default function DashboardPage() {
       </header>
 
       <div className="dashboard-stats">
-        <div className="stat-card relative overflow-hidden">
+        <div className="stat-card relative overflow-hidden pb-10">
           <p className={`stat-value ${playfair.className}`}>{submissions.length}</p>
           <p className={`stat-label ${playfair.className}`}>Total RSVPs</p>
-          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
-            {[...Array(20)].map((_, i) => (
+          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
+            {[...Array(30)].map((_, i) => (
               <img
                 key={i}
                 src="/Border pattern 1.svg"
                 alt=""
-                className="h-4 flex-shrink-0"
+                className="h-8 flex-shrink-0"
                 style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
               />
             ))}
           </div>
         </div>
-        <div className="stat-card relative overflow-hidden">
+        <div className="stat-card relative overflow-hidden pb-10">
           <p className={`stat-value ${playfair.className}`}>{totalGuests}</p>
           <p className={`stat-label ${playfair.className}`}>Total Guests</p>
-          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
-            {[...Array(20)].map((_, i) => (
+          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
+            {[...Array(30)].map((_, i) => (
               <img
                 key={i}
                 src="/Border pattern 1.svg"
                 alt=""
-                className="h-4 flex-shrink-0"
+                className="h-8 flex-shrink-0"
                 style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
               />
             ))}
@@ -382,52 +382,52 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="rsvp-table-container relative overflow-hidden">
+          <div className="rsvp-table-container relative overflow-hidden pb-10">
             <div className={`loading-state ${playfair.className}`}>Loading submissions...</div>
-            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
               {[...Array(50)].map((_, i) => (
                 <img
                   key={i}
                   src="/Border pattern 1.svg"
                   alt=""
-                  className="h-6 flex-shrink-0"
+                  className="h-8 flex-shrink-0"
                   style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
                 />
               ))}
             </div>
           </div>
         ) : error ? (
-          <div className="rsvp-table-container relative overflow-hidden">
+          <div className="rsvp-table-container relative overflow-hidden pb-10">
             <div className={`empty-state ${playfair.className}`}>{error}</div>
-            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
               {[...Array(50)].map((_, i) => (
                 <img
                   key={i}
                   src="/Border pattern 1.svg"
                   alt=""
-                  className="h-6 flex-shrink-0"
+                  className="h-8 flex-shrink-0"
                   style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
                 />
               ))}
             </div>
           </div>
         ) : submissions.length === 0 ? (
-          <div className="rsvp-table-container relative overflow-hidden">
+          <div className="rsvp-table-container relative overflow-hidden pb-10">
             <div className={`empty-state ${playfair.className}`}>No RSVP submissions yet.</div>
-            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
               {[...Array(50)].map((_, i) => (
                 <img
                   key={i}
                   src="/Border pattern 1.svg"
                   alt=""
-                  className="h-6 flex-shrink-0"
+                  className="h-8 flex-shrink-0"
                   style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
                 />
               ))}
             </div>
           </div>
         ) : (
-          <div className="rsvp-table-container relative overflow-hidden">
+          <div className="rsvp-table-container relative overflow-hidden pb-10">
             <table className={`rsvp-table ${playfair.className}`}>
               <thead>
                 <tr>
@@ -490,13 +490,13 @@ export default function DashboardPage() {
                 ))}
               </tbody>
             </table>
-            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
               {[...Array(50)].map((_, i) => (
                 <img
                   key={i}
                   src="/Border pattern 1.svg"
                   alt=""
-                  className="h-6 flex-shrink-0"
+                  className="h-8 flex-shrink-0"
                   style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
                 />
               ))}
