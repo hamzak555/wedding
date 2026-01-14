@@ -89,10 +89,10 @@ export default function Home() {
           }}
         >
           {/* Decorative corners */}
-          <img src="/Border top left.png" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-12 md:h-24" />
-          <img src="/border top right.png" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-12 md:h-24" />
-          <img src="/border bottom left.png" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-12 md:h-24" />
-          <img src="/border bottom right.png" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-12 md:h-24" />
+          <img src="/Hero Corner.svg" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-12 md:h-24" />
+          <img src="/Hero Corner.svg" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-12 md:h-24" style={{ transform: 'scaleX(-1)' }} />
+          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-12 md:h-24" style={{ transform: 'scaleY(-1)' }} />
+          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-12 md:h-24" style={{ transform: 'scale(-1, -1)' }} />
 
 
           {/* Navigation */}
