@@ -433,7 +433,7 @@ export default function Home() {
               />
 
               {[
-                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '3:00 PM', event: 'Mocktail' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
@@ -464,7 +464,7 @@ export default function Home() {
             <div className="flex justify-between mb-4">
               <div className="w-6" /> {/* Spacer for left icon */}
               {[
-                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '3:00 PM', event: 'Mocktail' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
@@ -498,7 +498,7 @@ export default function Home() {
 
                 <div className="flex justify-between w-full">
                   {[
-                    { time: '3:00 PM', event: 'Cocktail Hour' },
+                    { time: '3:00 PM', event: 'Mocktail' },
                     { time: '4:00 PM', event: 'Nikkah' },
                     { time: '5:00 PM', event: 'Cake Cutting' },
                     { time: '6:00 PM', event: 'Dinner' },
@@ -528,7 +528,7 @@ export default function Home() {
             <div className="flex justify-between mt-4">
               <div className="w-6" /> {/* Spacer for left icon */}
               {[
-                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '3:00 PM', event: 'Mocktail' },
                 { time: '4:00 PM', event: 'Nikkah' },
                 { time: '5:00 PM', event: 'Cake Cutting' },
                 { time: '6:00 PM', event: 'Dinner' },
