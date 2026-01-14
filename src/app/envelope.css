@@ -2292,11 +2292,11 @@
 }
 
 .login-title {
-  font-family: var(--font-ragitha), cursive;
   font-size: 2.5rem;
   color: #7d1b1b;
   text-align: center;
   margin: 0 0 0.5rem 0;
+  letter-spacing: 0.1em;
 }
 
 .login-subtitle {
@@ -2402,10 +2402,10 @@
 }
 
 .dashboard-title {
-  font-family: var(--font-ragitha), cursive;
   font-size: 2.5rem;
   color: #e8e4dc;
   margin: 0;
+  letter-spacing: 0.1em;
 }
 
 .dashboard-logout {
@@ -2474,10 +2474,10 @@
 }
 
 .dashboard-section-title {
-  font-family: var(--font-ragitha), cursive;
   font-size: 2rem;
   color: #e8e4dc;
   margin: 0;
+  letter-spacing: 0.1em;
 }
 
 .export-buttons {
