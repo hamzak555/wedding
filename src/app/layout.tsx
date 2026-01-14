@@ -41,6 +41,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
+  other: {
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+  },
+  themeColor: "#7d1b1b",
   openGraph: {
     title: "Bogdana & Hamza | Wedding Celebration",
     description: "Join us in celebrating the wedding of Bogdana and Hamza on June 20, 2026.",

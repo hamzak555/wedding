@@ -166,7 +166,7 @@ export default function Home() {
           {/* Content */}
           <div className="mt-12 md:mt-16" style={{ color: '#e8e4dc' }}>
             <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-xl ${playfair.className}`} style={{ textAlign: 'justify' }}>
-              We&apos;re so excited to share this special day with you! As we begin our journey together, we&apos;d love for you to join us in celebrating our big day. Here, you&apos;ll find all the details you need — our love story, event schedule, venue information, RSVP, and more. Your presence means the world to us, and we can&apos;t wait to create unforgettable memories together. Let&apos;s celebrate love, laughter, and happily ever after!
+              We&apos;re so excited to share this special day with you! As we begin our journey together, we&apos;d love for you to join us in celebrating our big day. Here, you&apos;ll find all the details you need — event schedule, venue information, RSVP, and more. Your presence means the world to us, and we can&apos;t wait to create unforgettable memories together. Let&apos;s celebrate love, laughter, and happily ever after!
             </p>
             <p className={`text-base mt-8 ${playfair.className}`}>
               With Love,
@@ -770,7 +770,7 @@ export default function Home() {
       {showBackToTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full hover:opacity-70 transition-opacity z-50"
+          className="fixed bottom-8 right-8 w-14 h-14 hidden md:flex items-center justify-center rounded-full hover:opacity-70 transition-opacity z-50"
           style={{ backgroundColor: 'transparent', border: '2px solid #e8e4dc' }}
           aria-label="Back to top"
         >
