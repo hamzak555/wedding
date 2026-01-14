@@ -108,8 +108,11 @@ export default function DashboardPage() {
   };
 
   const handleDelete = async () => {
+    const idToDelete = deleteDialog.id; // Capture ID before dialog closes
+    closeDeleteDialog(); // Close dialog immediately for better UX
+
     try {
-      const response = await fetch(`/api/rsvps/${deleteDialog.id}`, {
+      const response = await fetch(`/api/rsvps/${idToDelete}`, {
         method: "DELETE",
       });
 
@@ -118,11 +121,9 @@ export default function DashboardPage() {
         throw new Error(data.error || "Failed to delete");
       }
 
-      setSubmissions(submissions.filter((sub) => sub.id !== deleteDialog.id));
-      closeDeleteDialog();
+      setSubmissions(submissions.filter((sub) => sub.id !== idToDelete));
     } catch (err) {
       console.error("Error deleting RSVP:", err);
-      closeDeleteDialog();
     }
   };
 
@@ -179,19 +180,22 @@ export default function DashboardPage() {
       return;
     }
 
+    // Capture values before dialog closes
+    const idToUpdate = editDialog.submission.id;
+    const updatedData = {
+      name: editForm.name,
+      email: editForm.email,
+      guests: editForm.guests.map((g) => ({ name: g.name })),
+    };
+    closeEditDialog(); // Close dialog immediately for better UX
+
     try {
-      const response = await fetch(`/api/rsvps/${editDialog.submission.id}`, {
+      const response = await fetch(`/api/rsvps/${idToUpdate}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: editForm.name,
-          email: editForm.email,
-          guests: editForm.guests.map((g) => ({
-            name: g.name,
-          })),
-        }),
+        body: JSON.stringify(updatedData),
       });
 
       if (!response.ok) {
@@ -201,19 +205,14 @@ export default function DashboardPage() {
 
       setSubmissions(
         submissions.map((sub) =>
-          sub.id === editDialog.submission!.id
+          sub.id === idToUpdate
             ? {
                 ...sub,
-                name: editForm.name,
-                email: editForm.email,
-                guests: editForm.guests.map((g) => ({
-                  name: g.name,
-                })),
+                ...updatedData,
               }
             : sub
         )
       );
-      closeEditDialog();
     } catch (err) {
       console.error("Error updating RSVP:", err);
     }
