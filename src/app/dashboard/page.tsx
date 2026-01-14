@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { Playfair_Display } from "next/font/google";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
@@ -18,21 +19,23 @@ import {
 
 import "../envelope.css";
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+});
+
 interface EditGuest {
   name: string;
-  dietary_restrictions: string;
 }
 
 interface Guest {
   name: string;
-  dietary_restrictions: string | null;
 }
 
 interface RSVPSubmission {
   id: string;
   name: string;
   email: string;
-  primary_dietary: string | null;
   guests: Guest[];
   created_at: string;
 }
@@ -53,7 +56,6 @@ export default function DashboardPage() {
   const [editForm, setEditForm] = useState({
     name: "",
     email: "",
-    primary_dietary: "",
     guests: [] as EditGuest[],
   });
   const router = useRouter();
@@ -122,10 +124,8 @@ export default function DashboardPage() {
     setEditForm({
       name: submission.name,
       email: submission.email,
-      primary_dietary: submission.primary_dietary || "",
       guests: (submission.guests || []).map((g) => ({
         name: g.name,
-        dietary_restrictions: g.dietary_restrictions || "",
       })),
     });
     setEditDialog({ open: true, submission });
@@ -138,7 +138,7 @@ export default function DashboardPage() {
   const addEditGuest = () => {
     setEditForm({
       ...editForm,
-      guests: [...editForm.guests, { name: "", dietary_restrictions: "" }],
+      guests: [...editForm.guests, { name: "" }],
     });
   };
 
@@ -179,10 +179,8 @@ export default function DashboardPage() {
         .update({
           name: editForm.name,
           email: editForm.email,
-          primary_dietary: editForm.primary_dietary || null,
           guests: editForm.guests.map((g) => ({
             name: g.name,
-            dietary_restrictions: g.dietary_restrictions || null,
           })),
         })
         .eq("id", editDialog.submission.id);
@@ -196,10 +194,8 @@ export default function DashboardPage() {
                 ...sub,
                 name: editForm.name,
                 email: editForm.email,
-                primary_dietary: editForm.primary_dietary || null,
                 guests: editForm.guests.map((g) => ({
                   name: g.name,
-                  dietary_restrictions: g.dietary_restrictions || null,
                 })),
               }
             : sub
@@ -230,18 +226,17 @@ export default function DashboardPage() {
   };
 
   const exportToCSV = () => {
-    const headers = ["Name", "Email", "Dietary Restrictions", "Additional Guests", "Total Guests", "Submitted"];
+    const headers = ["Name", "Email", "Additional Guests", "Total Guests", "Submitted"];
 
     const rows = submissions.map((sub) => {
       const guestsList = sub.guests && sub.guests.length > 0
-        ? sub.guests.map(g => `${g.name}${g.dietary_restrictions ? ` (${g.dietary_restrictions})` : ""}`).join("; ")
+        ? sub.guests.map(g => g.name).join("; ")
         : "";
       const totalGuests = 1 + (sub.guests?.length || 0);
 
       return [
         sub.name,
         sub.email,
-        sub.primary_dietary || "",
         guestsList,
         totalGuests.toString(),
         formatDate(sub.created_at)
@@ -280,13 +275,12 @@ export default function DashboardPage() {
     // Prepare table data
     const tableData = submissions.map((sub) => {
       const guestsList = sub.guests && sub.guests.length > 0
-        ? sub.guests.map(g => `${g.name}${g.dietary_restrictions ? ` (${g.dietary_restrictions})` : ""}`).join("\n")
+        ? sub.guests.map(g => g.name).join("\n")
         : "-";
 
       return [
         sub.name,
         sub.email,
-        sub.primary_dietary || "-",
         guestsList,
         (1 + (sub.guests?.length || 0)).toString(),
         formatDate(sub.created_at)
@@ -295,24 +289,23 @@ export default function DashboardPage() {
 
     autoTable(doc, {
       startY: 55,
-      head: [["Name", "Email", "Dietary", "Additional Guests", "Total", "Submitted"]],
+      head: [["Name", "Email", "Additional Guests", "Total", "Submitted"]],
       body: tableData,
       styles: {
         fontSize: 9,
         cellPadding: 3,
       },
       headStyles: {
-        fillColor: [137, 142, 108],
+        fillColor: [125, 27, 27],
         textColor: 255,
         fontStyle: "bold",
       },
       columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 40 },
-        2: { cellWidth: 25 },
-        3: { cellWidth: 40 },
-        4: { cellWidth: 15 },
-        5: { cellWidth: 30 },
+        0: { cellWidth: 35 },
+        1: { cellWidth: 50 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 20 },
+        4: { cellWidth: 35 },
       },
     });
 
@@ -322,29 +315,29 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-page">
       <header className="dashboard-header">
-        <h1 className="dashboard-title">Rsvp Dashboard</h1>
-        <button onClick={handleLogout} className="dashboard-logout">
+        <h1 className={`dashboard-title ${playfair.className}`}>RSVP DASHBOARD</h1>
+        <button onClick={handleLogout} className={`dashboard-logout ${playfair.className}`}>
           Sign Out
         </button>
       </header>
 
       <div className="dashboard-stats">
         <div className="stat-card">
-          <p className="stat-value">{submissions.length}</p>
-          <p className="stat-label">Total RSVPs</p>
+          <p className={`stat-value ${playfair.className}`}>{submissions.length}</p>
+          <p className={`stat-label ${playfair.className}`}>Total RSVPs</p>
         </div>
         <div className="stat-card">
-          <p className="stat-value">{totalGuests}</p>
-          <p className="stat-label">Total Guests</p>
+          <p className={`stat-value ${playfair.className}`}>{totalGuests}</p>
+          <p className={`stat-label ${playfair.className}`}>Total Guests</p>
         </div>
       </div>
 
       <div className="dashboard-content">
         <div className="dashboard-section-header">
-          <h2 className="dashboard-section-title">All Submissions</h2>
+          <h2 className={`dashboard-section-title ${playfair.className}`}>ALL SUBMISSIONS</h2>
           {submissions.length > 0 && (
             <div className="export-buttons">
-              <button className="export-button" onClick={exportToCSV}>
+              <button className={`export-button ${playfair.className}`} onClick={exportToCSV}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                   <polyline points="7 10 12 15 17 10"/>
@@ -352,7 +345,7 @@ export default function DashboardPage() {
                 </svg>
                 Export CSV
               </button>
-              <button className="export-button" onClick={exportToPDF}>
+              <button className={`export-button ${playfair.className}`} onClick={exportToPDF}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                   <polyline points="14 2 14 8 20 8"/>
@@ -368,24 +361,23 @@ export default function DashboardPage() {
 
         {loading ? (
           <div className="rsvp-table-container">
-            <div className="loading-state">Loading submissions...</div>
+            <div className={`loading-state ${playfair.className}`}>Loading submissions...</div>
           </div>
         ) : error ? (
           <div className="rsvp-table-container">
-            <div className="empty-state">{error}</div>
+            <div className={`empty-state ${playfair.className}`}>{error}</div>
           </div>
         ) : submissions.length === 0 ? (
           <div className="rsvp-table-container">
-            <div className="empty-state">No RSVP submissions yet.</div>
+            <div className={`empty-state ${playfair.className}`}>No RSVP submissions yet.</div>
           </div>
         ) : (
           <div className="rsvp-table-container">
-            <table className="rsvp-table">
+            <table className={`rsvp-table ${playfair.className}`}>
               <thead>
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Dietary Restrictions</th>
                   <th>Additional Guests</th>
                   <th>Total Guests</th>
                   <th>Submitted</th>
@@ -397,20 +389,11 @@ export default function DashboardPage() {
                   <tr key={submission.id}>
                     <td>{submission.name}</td>
                     <td>{submission.email}</td>
-                    <td>{submission.primary_dietary || "-"}</td>
                     <td>
                       {submission.guests && submission.guests.length > 0 ? (
                         <ul className="guest-list">
                           {submission.guests.map((guest, index) => (
-                            <li key={index}>
-                              {guest.name}
-                              {guest.dietary_restrictions && (
-                                <span className="guest-dietary">
-                                  {" "}
-                                  ({guest.dietary_restrictions})
-                                </span>
-                              )}
-                            </li>
+                            <li key={index}>{guest.name}</li>
                           ))}
                         </ul>
                       ) : (
@@ -459,16 +442,16 @@ export default function DashboardPage() {
       <AlertDialog open={deleteDialog.open} onOpenChange={closeDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete RSVP</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className={playfair.className}>Delete RSVP</AlertDialogTitle>
+            <AlertDialogDescription className={playfair.className}>
               Are you sure you want to delete the RSVP for &quot;{deleteDialog.name}&quot;? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={closeDeleteDialog}>
+            <AlertDialogCancel onClick={closeDeleteDialog} className={playfair.className}>
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
+            <AlertDialogAction onClick={handleDelete} className={playfair.className}>
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -478,46 +461,37 @@ export default function DashboardPage() {
       <AlertDialog open={editDialog.open} onOpenChange={closeEditDialog}>
         <AlertDialogContent className="edit-dialog-content">
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit RSVP</AlertDialogTitle>
+            <AlertDialogTitle className={playfair.className}>Edit RSVP</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="edit-form">
             <div className="edit-field">
-              <label>Name</label>
+              <label className={playfair.className}>Name</label>
               <input
                 type="text"
                 value={editForm.name}
                 onChange={(e) =>
                   setEditForm({ ...editForm, name: e.target.value })
                 }
+                className={playfair.className}
               />
             </div>
             <div className="edit-field">
-              <label>Email</label>
+              <label className={playfair.className}>Email</label>
               <input
                 type="email"
                 value={editForm.email}
                 onChange={(e) =>
                   setEditForm({ ...editForm, email: e.target.value })
                 }
-              />
-            </div>
-            <div className="edit-field">
-              <label>Dietary Restrictions</label>
-              <input
-                type="text"
-                value={editForm.primary_dietary}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, primary_dietary: e.target.value })
-                }
-                placeholder="Optional"
+                className={playfair.className}
               />
             </div>
             <div className="edit-guests-section">
               <div className="edit-guests-header">
-                <label>Additional Guests</label>
+                <label className={playfair.className}>Additional Guests</label>
                 <button
                   type="button"
-                  className="add-guest-button"
+                  className={`add-guest-button ${playfair.className}`}
                   onClick={addEditGuest}
                 >
                   + Add Guest
@@ -526,7 +500,7 @@ export default function DashboardPage() {
               {editForm.guests.map((guest, index) => (
                 <div key={index} className="edit-guest-card">
                   <div className="edit-guest-header">
-                    <span>Guest {index + 2}</span>
+                    <span className={playfair.className}>Guest {index + 2}</span>
                     <button
                       type="button"
                       className="remove-guest-button"
@@ -542,25 +516,18 @@ export default function DashboardPage() {
                       updateEditGuest(index, "name", e.target.value)
                     }
                     placeholder="Guest name"
-                  />
-                  <input
-                    type="text"
-                    value={guest.dietary_restrictions}
-                    onChange={(e) =>
-                      updateEditGuest(index, "dietary_restrictions", e.target.value)
-                    }
-                    placeholder="Dietary restrictions (optional)"
+                    className={playfair.className}
                   />
                 </div>
               ))}
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={closeEditDialog}>
+            <AlertDialogCancel onClick={closeEditDialog} className={playfair.className}>
               Cancel
             </AlertDialogCancel>
             <button
-              className="save-button"
+              className={`save-button ${playfair.className}`}
               onClick={handleSaveEdit}
               disabled={hasEmptyGuestName}
             >

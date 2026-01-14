@@ -4,7 +4,13 @@ import { useState, FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Playfair_Display } from "next/font/google";
 import "../envelope.css";
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+});
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,17 +41,17 @@ export default function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-container">
-        <Link href="/" className="login-back-link">
+        <Link href="/" className={`login-back-link ${playfair.className}`}>
           &larr; Back to Wedding
         </Link>
-        <h1 className="login-title">Admin Login</h1>
-        <p className="login-subtitle">Sign in to view RSVP submissions</p>
+        <h1 className={`login-title ${playfair.className}`}>ADMIN LOGIN</h1>
+        <p className={`login-subtitle ${playfair.className}`}>Sign in to view RSVP submissions</p>
 
         <form onSubmit={handleLogin} className="login-form">
-          {error && <div className="login-error">{error}</div>}
+          {error && <div className={`login-error ${playfair.className}`}>{error}</div>}
 
           <div className="login-field">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email" className={playfair.className}>Email</label>
             <input
               type="email"
               id="email"
@@ -53,11 +59,12 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              className={playfair.className}
             />
           </div>
 
           <div className="login-field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className={playfair.className}>Password</label>
             <input
               type="password"
               id="password"
@@ -65,10 +72,11 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              className={playfair.className}
             />
           </div>
 
-          <button type="submit" className="login-button" disabled={loading}>
+          <button type="submit" className={`login-button ${playfair.className}`} disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
