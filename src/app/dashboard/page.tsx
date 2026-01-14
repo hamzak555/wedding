@@ -114,16 +114,20 @@ export default function DashboardPage() {
     try {
       const response = await fetch(`/api/rsvps/${idToDelete}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to delete");
+        console.error("Delete failed:", data);
+        alert(`Failed to delete: ${data.error || "Unknown error"}`);
+        return;
       }
 
       setSubmissions(submissions.filter((sub) => sub.id !== idToDelete));
     } catch (err) {
       console.error("Error deleting RSVP:", err);
+      alert("Failed to delete RSVP. Check console for details.");
     }
   };
 
@@ -195,12 +199,15 @@ export default function DashboardPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(updatedData),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to update");
+        console.error("Update failed:", data);
+        alert(`Failed to update: ${data.error || "Unknown error"}`);
+        return;
       }
 
       setSubmissions(
@@ -215,6 +222,7 @@ export default function DashboardPage() {
       );
     } catch (err) {
       console.error("Error updating RSVP:", err);
+      alert("Failed to update RSVP. Check console for details.");
     }
   };
 
