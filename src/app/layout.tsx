@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playwrite_NO, Parisienne } from "next/font/google";
+import { Geist, Geist_Mono, Parisienne } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,9 +13,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const playwriteNO = Playwrite_NO({
-  variable: "--font-playwrite-no",
-  weight: ["100", "200", "300", "400"],
+const ragitha = localFont({
+  src: "../../fonts/Ragitha.ttf",
+  variable: "--font-ragitha",
+});
+
+const ptSerif = localFont({
+  src: "../../fonts/PTSerif-Regular.ttf",
+  variable: "--font-pt-serif",
+});
+
+const diplomaScript = localFont({
+  src: "../../fonts/Diploma Script Pro Regular.ttf",
+  variable: "--font-diploma-script",
 });
 
 const parisienne = Parisienne({
@@ -54,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playwriteNO.variable} ${parisienne.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ragitha.variable} ${parisienne.variable} ${ptSerif.variable} ${diplomaScript.variable} antialiased`}
       >
         {children}
       </body>

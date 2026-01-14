@@ -1,99 +1,55 @@
 "use client";
 
-import { useState, useEffect, FormEvent, useRef } from "react";
-import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
-import "./envelope.css";
+import { useState, useEffect, FormEvent } from 'react';
+import { Playfair_Display, Great_Vibes } from 'next/font/google';
+import { createClient } from '@/lib/supabase/client';
 
-function useScrollAnimation() {
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+});
 
-    const elements = document.querySelectorAll(
-      ".scroll-animate, .scroll-animate-left, .scroll-animate-right, .scroll-animate-scale, .scroll-decoration"
-    );
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-}
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: '400',
+});
 
 interface Guest {
   id: number;
   name: string;
-  dietaryRestrictions: string;
-}
-
-function useCountdown(targetDate: Date) {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = targetDate.getTime() - new Date().getTime();
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      }
-    };
-
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  return timeLeft;
 }
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-  const [autoOpenProgress, setAutoOpenProgress] = useState(0);
-  const [flowerTransform, setFlowerTransform] = useState({ rotate: 0, y: 0 });
-  const weddingDate = new Date("2026-06-20T00:00:00");
-  const { days, hours, minutes, seconds } = useCountdown(weddingDate);
-
   // RSVP form state
   const [rsvpName, setRsvpName] = useState("");
   const [rsvpEmail, setRsvpEmail] = useState("");
-  const [primaryDietary, setPrimaryDietary] = useState("");
-  const [attending, setAttending] = useState<"yes" | "no" | "">("");
   const [guests, setGuests] = useState<Guest[]>([]);
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const supabase = createClient();
 
+  // Show/hide back to top button based on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const addGuest = () => {
-    setGuests([...guests, { id: Date.now(), name: "", dietaryRestrictions: "" }]);
+    setGuests([...guests, { id: Date.now(), name: "" }]);
   };
 
   const removeGuest = (id: number) => {
     setGuests(guests.filter(guest => guest.id !== id));
   };
 
-  const updateGuest = (id: number, field: keyof Guest, value: string) => {
+  const updateGuest = (id: number, value: string) => {
     setGuests(guests.map(guest =>
-      guest.id === id ? { ...guest, [field]: value } : guest
+      guest.id === id ? { ...guest, name: value } : guest
     ));
   };
 
@@ -105,10 +61,8 @@ export default function Home() {
       const { error } = await supabase.from("rsvps").insert({
         name: rsvpName,
         email: rsvpEmail,
-        primary_dietary: primaryDietary || null,
         guests: guests.map((g) => ({
           name: g.name,
-          dietary_restrictions: g.dietaryRestrictions || null,
         })),
       });
 
@@ -122,553 +76,590 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 500);
-
-      // Animate fixed flowers based on scroll
-      const scrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = scrollY / maxScroll;
-
-      // Rotate between -10 and 10 degrees, move up/down slightly
-      const rotate = Math.sin(scrollProgress * Math.PI * 4) * 10;
-      const y = Math.sin(scrollProgress * Math.PI * 2) * 30;
-
-      setFlowerTransform({ rotate, y });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Auto-open envelope after 15 seconds with progress indicator
-  useEffect(() => {
-    if (isOpen) return;
-
-    const duration = 15000; // 15 seconds
-    const interval = 100; // Update every 100ms
-    let elapsed = 0;
-
-    const progressInterval = setInterval(() => {
-      elapsed += interval;
-      setAutoOpenProgress((elapsed / duration) * 100);
-
-      if (elapsed >= duration) {
-        setIsOpen(true);
-        clearInterval(progressInterval);
-      }
-    }, interval);
-
-    return () => clearInterval(progressInterval);
-  }, [isOpen]);
-
-  useScrollAnimation();
-
   return (
-    <>
-    <button
-      className="fixed-rsvp-button"
-      onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-    >
-      RSVP NOW
-    </button>
-    <Image
-      src="/Flowers.png"
-      alt="Decorative flowers"
-      width={300}
-      height={400}
-      className="fixed-flowers-left"
-      style={{
-        transform: `translateY(calc(-50% + ${flowerTransform.y}px)) rotate(${flowerTransform.rotate}deg) scaleX(-1)`,
-      }}
-    />
-    <section className="cssletter">
-      <h1 className="couple-names">Bogdana & Hamza</h1>
-      <p className="wedding-date">JUNE 20, 2026</p>
-      <div className="countdown">
-        <div className="countdown-item">
-          <span className="countdown-value">{days}</span>
-          <span className="countdown-label">days</span>
+    <main className="min-h-screen" style={{ backgroundColor: '#7d1b1b' }}>
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center justify-center px-4 md:px-24 py-4 md:py-8">
+        {/* Cream inner frame */}
+        <div
+          className="relative w-full max-w-[95vw] md:max-w-[85vw] mx-auto flex flex-col"
+          style={{
+            backgroundColor: '#e8e4dc',
+            minHeight: 'calc(100vh - 2rem)',
+          }}
+        >
+          {/* Decorative corners */}
+          <img src="/Border top left.png" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-12 md:h-24" />
+          <img src="/border top right.png" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-12 md:h-24" />
+          <img src="/border bottom left.png" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-12 md:h-24" />
+          <img src="/border bottom right.png" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-12 md:h-24" />
+
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center justify-center gap-16 pt-8 pb-4">
+            <a href="#rsvp" className={`text-xs tracking-[0.2em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>RSVP</a>
+            <a href="#timeline" className={`text-xs tracking-[0.2em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>TIMELINE</a>
+            <a href="#ceremony" className={`text-xs tracking-[0.2em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>CEREMONY</a>
+            <a href="#faq" className={`text-xs tracking-[0.2em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>FAQ</a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1" target="_blank" rel="noopener noreferrer" className={`text-xs tracking-[0.2em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>GET DIRECTIONS</a>
+          </nav>
+
+          {/* Main content */}
+          <div className="flex-1 flex flex-col items-center justify-center text-center px-4 md:px-8">
+            <div className="relative">
+              <h1 className={`text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                BOGDANA
+              </h1>
+              <span
+                className="absolute left-1/2 -translate-x-1/2 text-5xl sm:text-6xl md:text-8xl lg:text-9xl"
+                style={{
+                  fontFamily: 'var(--font-diploma-script)',
+                  color: '#7d1b1b',
+                  top: '68%',
+                  textShadow: '-2px -2px 0 #EAE4DB, 2px -2px 0 #EAE4DB, -2px 2px 0 #EAE4DB, 2px 2px 0 #EAE4DB, 0 -2px 0 #EAE4DB, 0 2px 0 #EAE4DB, -2px 0 0 #EAE4DB, 2px 0 0 #EAE4DB',
+                }}
+              >
+                and
+              </span>
+            </div>
+            <h1 className={`text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-wide -mt-2 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+              HAMZA
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-6 md:mt-8" style={{ fontFamily: 'var(--font-diploma-script)', color: '#7d1b1b' }}>
+              are getting married
+            </p>
+          </div>
+
+          {/* Date and Address at bottom */}
+          <div className="pb-6 md:pb-10 text-center">
+            <p className={`text-sm md:text-lg tracking-[0.3em] ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
+              20<sup>TH</sup> JUNE 2026 <span className="mx-2 md:mx-4">|</span> 2120 ROSEBANK ROAD, PICKERING
+            </p>
+          </div>
         </div>
-        <div className="countdown-item">
-          <span className="countdown-value">{hours}</span>
-          <span className="countdown-label">hours</span>
-        </div>
-        <div className="countdown-item">
-          <span className="countdown-value">{minutes}</span>
-          <span className="countdown-label">min</span>
-        </div>
-        <div className="countdown-item">
-          <span className="countdown-value">{seconds}</span>
-          <span className="countdown-label">sec</span>
-        </div>
-      </div>
-      <div className={`envelope-container ${isOpen ? "active" : ""}`}>
-        <div className={`envelope ${isOpen ? "active" : ""}`}>
-          <div className="heart-wrapper">
-            <button
-              className="heart-button"
-              onClick={() => setIsOpen(true)}
-              aria-label="Open Envelope"
+      </section>
+
+      {/* You Are Invited Section */}
+      <section className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-48 px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#7d1b1b' }}>
+        <div className="max-w-xl flex-shrink-0">
+          {/* Title */}
+          <div className="relative mb-8">
+            <h2 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+              YOU ARE
+            </h2>
+            <span
+              className="absolute text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
+              style={{
+                fontFamily: 'var(--font-diploma-script)',
+                color: '#e8e4dc',
+                left: '1rem',
+                top: '85%',
+                textShadow: '-2px -2px 0 #7d1b1b, 2px -2px 0 #7d1b1b, -2px 2px 0 #7d1b1b, 2px 2px 0 #7d1b1b',
+              }}
             >
-              <svg viewBox="0 0 32 29" className="heart-svg">
-                <defs>
-                  <clipPath id="heartClip">
-                    <path d="M16 28C16 28 0 18 0 8.5C0 3.8 3.8 0 8.5 0C11.5 0 14 1.5 16 4C18 1.5 20.5 0 23.5 0C28.2 0 32 3.8 32 8.5C32 18 16 28 16 28Z" />
-                  </clipPath>
-                </defs>
-                {/* Base heart (dark red) */}
-                <path
-                  className="heart-base"
-                  d="M16 28C16 28 0 18 0 8.5C0 3.8 3.8 0 8.5 0C11.5 0 14 1.5 16 4C18 1.5 20.5 0 23.5 0C28.2 0 32 3.8 32 8.5C32 18 16 28 16 28Z"
-                  fill="#611D1C"
+              Invited
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="mt-12 md:mt-16" style={{ color: '#e8e4dc' }}>
+            <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-xl ${playfair.className}`} style={{ textAlign: 'justify' }}>
+              We&apos;re so excited to share this special day with you! As we begin our journey together, we&apos;d love for you to join us in celebrating our big day. Here, you&apos;ll find all the details you need — our love story, event schedule, venue information, RSVP, and more. Your presence means the world to us, and we can&apos;t wait to create unforgettable memories together. Let&apos;s celebrate love, laughter, and happily ever after!
+            </p>
+            <p className={`text-base mt-8 ${playfair.className}`}>
+              With Love,
+            </p>
+            <p className="text-2xl md:text-3xl" style={{ fontFamily: 'var(--font-diploma-script)' }}>
+              Bogdana & Hamza
+            </p>
+          </div>
+        </div>
+
+        {/* Overlapping images on the right - hidden on mobile */}
+        <div className="hidden md:block relative group cursor-pointer">
+          <img
+            src="/LEFT.jpg"
+            alt=""
+            className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
+            style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
+          />
+          <img
+            src="/RIGHT.jpg"
+            alt=""
+            className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
+            style={{ transform: 'rotate(5deg)' }}
+          />
+        </div>
+        </div>
+      </section>
+
+
+      {/* RSVP Section */}
+      <section id="rsvp" className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div className="relative w-full max-w-[95vw] md:max-w-[85vw] mx-auto flex items-center justify-center" style={{ backgroundColor: '#e8e4dc' }}>
+          <img src="/RSVP Top Right Corner.png" alt="" className="absolute top-6 right-6 md:top-10 md:right-10 h-10 md:h-16" />
+        <div className="w-full max-w-6xl flex flex-col md:flex-row items-center md:items-center justify-between gap-8 md:gap-16 px-6 md:px-12 py-28 md:py-52">
+        <div className="max-w-md flex-shrink-0">
+          {/* Title */}
+          <div className="relative mb-8">
+            <h2 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+              KINDLY
+            </h2>
+            <span
+              className="absolute text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
+              style={{
+                fontFamily: 'var(--font-diploma-script)',
+                color: '#7d1b1b',
+                left: '1rem',
+                top: '85%',
+                textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+              }}
+            >
+              Respond
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="mt-12 md:mt-16" style={{ color: '#7d1b1b' }}>
+            <p className={`text-base md:text-lg leading-relaxed max-w-md ${playfair.className}`} style={{ textAlign: 'justify', fontVariantNumeric: 'lining-nums' }}>
+              We can&apos;t wait to celebrate with you! Please let us know if you&apos;ll be able to join us by filling out the RSVP form. We kindly ask that you respond by May 1st, 2026 so we can finalize all the details for our special day.
+            </p>
+          </div>
+        </div>
+
+        {/* RSVP Form */}
+        <div className="w-full max-w-sm flex-shrink-0">
+          {rsvpSubmitted ? (
+            <div className="text-center" style={{ color: '#7d1b1b' }}>
+              <h3 className={`text-4xl mb-4 ${greatVibes.className}`}>Thank You!</h3>
+              <p className={`text-base ${playfair.className}`}>We received your RSVP and are excited to celebrate together!</p>
+            </div>
+          ) : (
+            <form onSubmit={handleRsvpSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <label className={`text-xs tracking-[0.15em] ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  YOUR NAME
+                </label>
+                <input
+                  type="text"
+                  value={rsvpName}
+                  onChange={(e) => setRsvpName(e.target.value)}
+                  placeholder="Enter your full name"
+                  required
+                  className={`w-full px-4 py-3 text-sm placeholder:opacity-40 ${playfair.className}`}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '1px solid #7d1b1b',
+                    color: '#7d1b1b',
+                    outline: 'none'
+                  }}
                 />
-                {/* Fill rectangle that grows from bottom */}
-                {!isOpen && (
-                  <rect
-                    x="0"
-                    y={29 - (29 * autoOpenProgress / 100)}
-                    width="32"
-                    height={29 * autoOpenProgress / 100}
-                    fill="#f4a7b0"
-                    clipPath="url(#heartClip)"
-                  />
-                )}
-              </svg>
-              <span className="heart-text">Open</span>
-            </button>
-          </div>
-          <div className="envelope-flap"></div>
-          <div className="envelope-folds">
-            <div className="envelope-left"></div>
-            <div className="envelope-right"></div>
-            <div className="envelope-bottom"></div>
-          </div>
-          {isOpen && (
-            <div className="closeLetter" aria-hidden="true">
-              Close
-            </div>
-          )}
-        </div>
-        <Image
-          src="/watercolor-bouquet-pink-roses-dahlia.png"
-          alt="Floral decoration"
-          width={400}
-          height={400}
-          className="floral-overlay"
-        />
-        <div className={`polaroid-wrapper polaroid-left ${isOpen ? "active" : ""}`}>
-          <div className="polaroid">
-            <Image
-              src="/LEFT.jpg"
-              alt="Wedding Polaroid"
-              width={200}
-              height={250}
-              className="polaroid-image"
-            />
-            <span className="polaroid-date">06 · 20 · 2026</span>
-          </div>
-        </div>
-        <div className={`polaroid-wrapper polaroid-right ${isOpen ? "active" : ""}`}>
-          <div className="polaroid">
-            <Image
-              src="/RIGHT.jpg"
-              alt="Wedding Polaroid"
-              width={200}
-              height={250}
-              className="polaroid-image"
-            />
-            <span className="polaroid-date">&nbsp;</span>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section className="section-two">
-      <div className="postcard-container scroll-animate">
-        <Image
-          src="/post card new.png"
-          alt="Postcard"
-          width={600}
-          height={400}
-          className="postcard"
-        />
-        <Image
-          src="/Stamp.png"
-          alt="Wax seal"
-          width={55}
-          height={55}
-          className="wax-seal"
-        />
-      </div>
-      <h2 className="section-two-title scroll-animate scroll-animate-delay-1">We Can&apos;t Wait to Celebrate With You</h2>
-      <p className="section-two-text scroll-animate scroll-animate-delay-2">
-        We&apos;re so excited to share our special day with our favorite people! Below you&apos;ll find all the details you need to make the most of our wedding celebration.
-      </p>
-      <button
-        className="rsvp-link-button scroll-animate scroll-animate-delay-3"
-        onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        RSVP NOW
-      </button>
-    </section>
-    <section className="section-ceremonies">
-      <Image
-        src="/Elements/Circles.png"
-        alt="Decorative circles"
-        width={200}
-        height={200}
-        className="ceremony-decoration scroll-decoration"
-      />
-      <Image
-        src="/Elements/Love.png"
-        alt="Decorative love"
-        width={150}
-        height={150}
-        className="ceremony-decoration-2 scroll-decoration"
-      />
-      <Image
-        src="/Elements/Flower.png"
-        alt="Decorative flower"
-        width={150}
-        height={150}
-        className="ceremony-decoration-right scroll-decoration"
-      />
-      <Image
-        src="/Elements/Cake.png"
-        alt="Decorative cake"
-        width={200}
-        height={200}
-        className="celebration-decoration scroll-decoration"
-      />
-      <Image
-        src="/Elements/Glass.png"
-        alt="Decorative glass"
-        width={150}
-        height={150}
-        className="celebration-decoration-2 scroll-decoration"
-      />
-      <Image
-        src="/Elements/Leaf 3.png"
-        alt="Decorative leaf"
-        width={80}
-        height={80}
-        className="ceremony-leaf-below-cake scroll-decoration"
-      />
-      <Image
-        src="/Elements/Leaf 1.png"
-        alt="Decorative leaf"
-        width={80}
-        height={80}
-        className="ceremony-leaf-below-glass scroll-decoration"
-      />
-      <div className="ceremony-content-box scroll-animate-scale">
-        <div className="ceremony-section">
-          <h2 className="section-ceremony-title">Nikkah Ceremony</h2>
-          <p className="section-ceremony-text">
-            Our ceremony will begin at 4:00 PM at R Garden Boutique located at <a href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1" target="_blank" rel="noopener noreferrer" className="address-link">2120 Rosebank Road, Pickering, ON, L1X 0A1</a>. We kindly ask guests to arrive by 3:00 PM for cocktail hour before we say &quot;I do.&quot;
-          </p>
-        </div>
-        <div className="ceremony-divider"></div>
-        <div className="celebration-section">
-          <h2 className="section-celebration-title">The Celebration</h2>
-          <p className="section-celebration-text">
-            Following the ceremony, join us for cocktail hour in the gardens with drinks and canapés, followed by an evening of dinner, heartfelt speeches, and dancing the night away inside the estate.
-          </p>
-        </div>
-      </div>
-    </section>
-    <section className="section-timeline">
-      <h2 className="section-timeline-title scroll-animate">Timeline of Events</h2>
-      <div className="timeline-horizontal scroll-animate scroll-animate-delay-1">
-        <div className="timeline-times">
-          <span className="timeline-time">3:00 PM</span>
-          <span className="timeline-time">4:00 PM</span>
-          <span className="timeline-time">5:00 PM</span>
-          <span className="timeline-time">6:00 PM</span>
-          <span className="timeline-time">8:00 PM</span>
-          <span className="timeline-time">10:00 PM</span>
-        </div>
-        <div className="timeline-line-wrapper">
-          <div className="timeline-line"></div>
-          <div className="timeline-dots">
-            <div className="timeline-dot"></div>
-            <div className="timeline-dot"></div>
-            <div className="timeline-dot"></div>
-            <div className="timeline-dot"></div>
-            <div className="timeline-dot"></div>
-            <div className="timeline-dot"></div>
-          </div>
-        </div>
-        <div className="timeline-items">
-          <div className="timeline-item">
-            <span className="timeline-item-time">3:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Cocktail Hour.svg" alt="Cocktail Hour" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Cocktail Hour</h3>
-          </div>
-          <div className="timeline-item">
-            <span className="timeline-item-time">4:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Ceremony.svg" alt="Nikkah" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Nikkah</h3>
-          </div>
-          <div className="timeline-item">
-            <span className="timeline-item-time">5:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Cake Cutting.svg" alt="Cake Cutting" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Cake Cutting</h3>
-          </div>
-          <div className="timeline-item">
-            <span className="timeline-item-time">6:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Dinner.svg" alt="Dinner" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Dinner</h3>
-          </div>
-          <div className="timeline-item">
-            <span className="timeline-item-time">8:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Dancing.svg" alt="Party" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Party</h3>
-          </div>
-          <div className="timeline-item">
-            <span className="timeline-item-time">10:00 PM</span>
-            <div className="timeline-icon">
-              <Image src="/Icons/Send off.svg" alt="Send Off" width={50} height={50} />
-            </div>
-            <h3 className="timeline-event">Send Off</h3>
-          </div>
-        </div>
-      </div>
-      <button
-        className="rsvp-link-button timeline-rsvp"
-        onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        RSVP NOW
-      </button>
-    </section>
-    <section className="section-how-we-met">
-      <div className="how-we-met-container">
-        <div className="how-we-met-content scroll-animate-left">
-          <h2 className="how-we-met-title">Ukraine to Canada</h2>
-          <p className="how-we-met-text">
-            Shortly after she made Canada her new home, our paths crossed and quickly became inseparable. What began as a simple connection grew into a life filled with adventure, traveling to new countries, building lasting friendships, and discovering a shared faith in Islam that shaped us in profound ways. Together, we faced challenges, celebrated milestones, and learned the true meaning of partnership. Every step of the journey led us here, grateful for the past and excited to begin this next chapter as husband and wife.
-          </p>
-        </div>
-        <div className="how-we-met-polaroid-wrapper scroll-animate-right">
-          <div className="how-we-met-polaroid">
-            <Image
-              src="/how they met photo.png"
-              alt="How we met photo"
-              width={300}
-              height={375}
-              className="how-we-met-polaroid-image"
-            />
-            <span className="how-we-met-polaroid-caption">How we met</span>
-          </div>
-          <Image
-            src="/Flower and tape.png"
-            alt="Flower and tape decoration"
-            width={100}
-            height={100}
-            className="polaroid-flower-tape-decoration"
-          />
-        </div>
-      </div>
-    </section>
-    <section className="section-venue">
-      <h2 className="section-venue-title scroll-animate">The Venue</h2>
-      <p className="section-venue-text scroll-animate scroll-animate-delay-1">R Garden Boutique located at 2120 Rosebank Road, Pickering, ON, L1X 0A1</p>
-      <div className="map-container scroll-animate scroll-animate-delay-2">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2873.8076!2d-79.0631!3d43.8701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4de9f5d3e3a5d%3A0x1234567890abcdef!2s2120%20Rosebank%20Rd%2C%20Pickering%2C%20ON%20L1X%200A1!5e0!3m2!1sen!2sca!4v1234567890"
-          width="100%"
-          height="400"
-          style={{ border: 0, filter: 'sepia(15%) saturate(90%)' }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="R Garden Boutique Location"
-        ></iframe>
-      </div>
-      <a
-        href="https://www.google.com/maps/dir/?api=1&destination=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="directions-button"
-      >
-        GET DIRECTIONS
-      </a>
-    </section>
-    <section id="rsvp" className="section-rsvp">
-      <div className="rsvp-box-wrapper scroll-animate-scale">
-        <div className="rsvp-decoration-container rsvp-decoration-desktop">
-          <Image
-            src="/RSVP plate.png"
-            alt="RSVP plate"
-            width={300}
-            height={300}
-            className="rsvp-decoration"
-          />
-        </div>
-      {rsvpSubmitted ? (
-        <div className="rsvp-form rsvp-thank-you">
-          <h3>Thank You</h3>
-          <p>We received your RSVP and are excited to celebrate together!</p>
-        </div>
-      ) : (
-        <form className="rsvp-form" onSubmit={handleRsvpSubmit}>
-          <div className="rsvp-decoration-container rsvp-decoration-mobile">
-            <Image
-              src="/RSVP plate.png"
-              alt="RSVP plate"
-              width={300}
-              height={300}
-              className="rsvp-decoration"
-            />
-          </div>
-          <p className="rsvp-description">Kindly enter your details below. If you&apos;re responding on behalf of additional guests, use the + Add Guest button to include their names. We ask that all guests attending be listed individually.</p>
-          <div className="rsvp-field">
-            <label htmlFor="rsvp-name">Primary Guest Name</label>
-            <input
-              type="text"
-              id="rsvp-name"
-              value={rsvpName}
-              onChange={(e) => setRsvpName(e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
-            <input
-              type="text"
-              id="primary-dietary"
-              value={primaryDietary}
-              onChange={(e) => setPrimaryDietary(e.target.value)}
-              placeholder="Dietary restrictions (optional)"
-            />
-          </div>
-          <div className="rsvp-field">
-            <label htmlFor="rsvp-email">Email Address</label>
-            <input
-              type="email"
-              id="rsvp-email"
-              value={rsvpEmail}
-              onChange={(e) => setRsvpEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div className="rsvp-guests-section">
-                <div className="rsvp-guests-header">
-                  <label>Additional Guests</label>
-                  <button type="button" className="rsvp-add-guest" onClick={addGuest}>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className={`text-xs tracking-[0.15em] ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  EMAIL ADDRESS
+                </label>
+                <input
+                  type="email"
+                  value={rsvpEmail}
+                  onChange={(e) => setRsvpEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className={`w-full px-4 py-3 text-sm placeholder:opacity-40 ${playfair.className}`}
+                  style={{
+                    backgroundColor: 'transparent',
+                    border: '1px solid #7d1b1b',
+                    color: '#7d1b1b',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <label className={`text-xs tracking-[0.15em] ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                    ADDITIONAL GUESTS
+                  </label>
+                  <button
+                    type="button"
+                    onClick={addGuest}
+                    className={`text-xs tracking-[0.1em] hover:opacity-70 px-3 py-1 ${playfair.className}`}
+                    style={{ color: '#7d1b1b', border: '1px solid #7d1b1b' }}
+                  >
                     + Add Guest
                   </button>
                 </div>
                 {guests.map((guest, index) => (
-                  <div key={guest.id} className="rsvp-guest-card">
-                    <div className="rsvp-guest-header">
-                      <span>Guest {index + 2}</span>
-                      <button
-                        type="button"
-                        className="rsvp-remove-guest"
-                        onClick={() => removeGuest(guest.id)}
-                      >
-                        ×
-                      </button>
-                    </div>
-                    <div className="rsvp-field">
-                      <input
-                        type="text"
-                        value={guest.name}
-                        onChange={(e) => updateGuest(guest.id, "name", e.target.value)}
-                        placeholder="Guest name"
-                        required
-                      />
-                    </div>
-                    <div className="rsvp-field">
-                      <input
-                        type="text"
-                        value={guest.dietaryRestrictions}
-                        onChange={(e) => updateGuest(guest.id, "dietaryRestrictions", e.target.value)}
-                        placeholder="Dietary restrictions (optional)"
-                      />
-                    </div>
+                  <div key={guest.id} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={guest.name}
+                      onChange={(e) => updateGuest(guest.id, e.target.value)}
+                      placeholder={`Guest ${index + 2} name`}
+                      required
+                      className={`w-full px-4 py-3 text-sm placeholder:opacity-40 ${playfair.className}`}
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1px solid #7d1b1b',
+                        color: '#7d1b1b',
+                        outline: 'none'
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeGuest(guest.id)}
+                      className="text-xl hover:opacity-70"
+                      style={{ color: '#7d1b1b' }}
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
-          <button type="submit" className="rsvp-submit" disabled={rsvpLoading}>
-            {rsvpLoading ? "SUBMITTING..." : "SUBMIT RSVP"}
-          </button>
-        </form>
+              <button
+                type="submit"
+                disabled={rsvpLoading}
+                className={`w-full px-8 py-3 text-sm tracking-[0.2em] transition-opacity hover:opacity-80 mt-4 ${playfair.className}`}
+                style={{
+                  backgroundColor: '#7d1b1b',
+                  color: '#e8e4dc',
+                  border: 'none'
+                }}
+              >
+                {rsvpLoading ? "SUBMITTING..." : "SUBMIT RSVP"}
+              </button>
+            </form>
+          )}
+        </div>
+        </div>
+          {/* Border pattern at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            {[...Array(50)].map((_, i) => (
+              <img
+                key={i}
+                src="/Border pattern 1.svg"
+                alt=""
+                className="h-6 md:h-8 flex-shrink-0"
+                style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section id="timeline" className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#7d1b1b' }}>
+          {/* Title */}
+          <div className="relative mb-12 md:mb-16">
+            <div className="flex items-center justify-center gap-3 md:gap-4">
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="h-6 md:h-8 lg:h-10 mt-2"
+                style={{ filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)', transform: 'rotate(-90deg)' }}
+              />
+              <div className="relative">
+                <h2 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                  TIMELINE
+                </h2>
+                <span
+                  className="absolute text-5xl sm:text-6xl md:text-7xl lg:text-8xl left-1/2 -translate-x-1/2"
+                  style={{
+                    fontFamily: 'var(--font-diploma-script)',
+                    color: '#e8e4dc',
+                    top: '85%',
+                    textShadow: '-2px -2px 0 #7d1b1b, 2px -2px 0 #7d1b1b, -2px 2px 0 #7d1b1b, 2px 2px 0 #7d1b1b',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  of Events
+                </span>
+              </div>
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="h-6 md:h-8 lg:h-10 mt-2"
+                style={{ filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)', transform: 'rotate(90deg)' }}
+              />
+            </div>
+          </div>
+
+          {/* Horizontal Timeline */}
+          <div className="w-full overflow-x-auto pb-4 mt-8 md:mt-12 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex justify-between items-start min-w-[800px] px-8">
+              {[
+                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '4:00 PM', event: 'Nikkah' },
+                { time: '5:00 PM', event: 'Cake Cutting' },
+                { time: '6:00 PM', event: 'Dinner' },
+                { time: '8:00 PM', event: 'Party' },
+                { time: '10:00 PM', event: 'Send Off' },
+              ].map((item, index, arr) => (
+                <div key={index} className="flex flex-col items-center flex-1 relative">
+                  {/* Time */}
+                  <span className={`text-xs md:text-sm tracking-wide mb-4 ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums' }}>
+                    {item.time}
+                  </span>
+
+                  {/* Dot with connecting line */}
+                  <div className="relative flex items-center justify-center w-full">
+                    {/* Line segment */}
+                    {index < arr.length - 1 && (
+                      <div className="absolute left-1/2 w-full h-[2px]" style={{ backgroundColor: '#e8e4dc' }} />
+                    )}
+                    {/* Dot */}
+                    <div className="w-3 h-3 rounded-full relative z-10" style={{ backgroundColor: '#e8e4dc' }} />
+                  </div>
+
+                  {/* Event name */}
+                  <span className="text-lg md:text-xl text-center mt-4" style={{ fontFamily: 'var(--font-diploma-script)', color: '#e8e4dc' }}>
+                    {item.event}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ceremony Section */}
+      <section id="ceremony" className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#e8e4dc' }}>
+          {/* Border pattern at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
+            {[...Array(50)].map((_, i) => (
+              <img
+                key={i}
+                src="/Border pattern 1.svg"
+                alt=""
+                className="h-6 md:h-8 flex-shrink-0"
+                style={{ filter: 'brightness(0) saturate(100%) invert(15%) sepia(32%) saturate(2476%) hue-rotate(337deg) brightness(91%) contrast(93%)' }}
+              />
+            ))}
+          </div>
+          <div className="max-w-4xl w-full">
+            {/* Nikkah Ceremony */}
+            <div className="text-center mb-16">
+              <div className="relative inline-block mb-6">
+                <h3 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  NIKKAH
+                </h3>
+                <span
+                  className="absolute text-3xl sm:text-4xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
+                  style={{
+                    fontFamily: 'var(--font-diploma-script)',
+                    color: '#7d1b1b',
+                    top: '85%',
+                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Ceremony
+                </span>
+              </div>
+              <p className={`text-base leading-relaxed max-w-2xl mx-auto mt-10 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
+                Our ceremony will begin at 4:00 PM at R Garden Boutique located at{' '}
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:opacity-70"
+                >
+                  2120 Rosebank Road, Pickering, ON, L1X 0A1
+                </a>. We kindly ask guests to arrive by 3:00 PM for cocktail hour.
+              </p>
+            </div>
+
+            {/* The Celebration */}
+            <div className="text-center">
+              <div className="relative inline-block mb-6">
+                <h3 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  THE
+                </h3>
+                <span
+                  className="absolute text-3xl sm:text-4xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
+                  style={{
+                    fontFamily: 'var(--font-diploma-script)',
+                    color: '#7d1b1b',
+                    top: '85%',
+                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Celebration
+                </span>
+              </div>
+              <p className={`text-base leading-relaxed max-w-2xl mx-auto mt-10 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                After the ceremony, we invite you to celebrate with cake cutting, dinner, and an evening together, followed by a send-off.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#7d1b1b' }}>
+          {/* Title */}
+          <div className="relative mb-12 md:mb-16">
+            <div className="flex items-center justify-center gap-3 md:gap-4">
+              <div className="relative">
+                <h2 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                  FREQUENTLY
+                </h2>
+                <span
+                  className="absolute text-5xl sm:text-6xl md:text-7xl lg:text-8xl left-1/2 -translate-x-1/2"
+                  style={{
+                    fontFamily: 'var(--font-diploma-script)',
+                    color: '#e8e4dc',
+                    top: '85%',
+                    textShadow: '-2px -2px 0 #7d1b1b, 2px -2px 0 #7d1b1b, -2px 2px 0 #7d1b1b, 2px 2px 0 #7d1b1b',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Asked Questions
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Items */}
+          <div className="w-full max-w-3xl flex flex-col gap-10 md:gap-12 mt-8">
+            <div>
+              <h3 className={`text-lg md:text-xl mb-3 ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                Can I bring my child/children?
+              </h3>
+              <p className={`text-sm md:text-base leading-relaxed ${playfair.className}`} style={{ color: '#e8e4dc', opacity: 0.85 }}>
+                The venue is an open space without a dedicated children&apos;s area, so we don&apos;t encourage it, but you&apos;re welcome to bring them if needed. Just be sure to mention them when you RSVP!
+              </p>
+            </div>
+            <div>
+              <h3 className={`text-lg md:text-xl mb-3 ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                Will there be parking at the venue?
+              </h3>
+              <p className={`text-sm md:text-base leading-relaxed ${playfair.className}`} style={{ color: '#e8e4dc', opacity: 0.85 }}>
+                Yes, there is free parking at the venue. However, there are only 30 spots available, so carpooling is highly encouraged!
+              </p>
+            </div>
+            <div>
+              <h3 className={`text-lg md:text-xl mb-3 ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                Will alcohol be served?
+              </h3>
+              <p className={`text-sm md:text-base leading-relaxed ${playfair.className}`} style={{ color: '#e8e4dc', opacity: 0.85 }}>
+                No alcohol will be served at the venue as we are not licensed to have alcohol on the premises. We&apos;ll have plenty of delicious mocktails, refreshments, and other beverages for you to enjoy!
+              </p>
+            </div>
+            <div>
+              <h3 className={`text-lg md:text-xl mb-3 ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                What is the dress code?
+              </h3>
+              <p className={`text-sm md:text-base leading-relaxed ${playfair.className}`} style={{ color: '#e8e4dc', opacity: 0.85 }}>
+                Business casual or formal. Feel free to wear any color you like — you&apos;ll be included in photos, so dress to impress!
+              </p>
+            </div>
+            <div>
+              <h3 className={`text-lg md:text-xl mb-3 ${playfair.className}`} style={{ color: '#e8e4dc' }}>
+                What if I&apos;m late?
+              </h3>
+              <p className={`text-sm md:text-base leading-relaxed ${playfair.className}`} style={{ color: '#e8e4dc', opacity: 0.85 }}>
+                Don&apos;t be late..
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="flex items-center justify-center px-4 md:px-24 py-8">
+        <div
+          className="relative w-full max-w-[95vw] md:max-w-[85vw] mx-auto flex flex-col px-6 md:px-12 py-12 md:py-16"
+          style={{ backgroundColor: '#e8e4dc' }}
+        >
+          {/* Decorative corners */}
+          <img src="/Border top left.png" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-8 md:h-12" />
+          <img src="/border top right.png" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-8 md:h-12" />
+          <img src="/border bottom left.png" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-8 md:h-12" />
+          <img src="/border bottom right.png" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-8 md:h-12" />
+
+          {/* Content */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full px-4 md:px-8">
+            {/* Left - Names */}
+            <div className="flex flex-col items-start">
+              <div className="relative">
+                <h2 className={`text-3xl sm:text-4xl md:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  BOGDANA
+                </h2>
+                <span
+                  className="absolute left-1/2 -translate-x-1/2 text-3xl sm:text-4xl md:text-5xl"
+                  style={{
+                    fontFamily: 'var(--font-diploma-script)',
+                    color: '#7d1b1b',
+                    top: '68%',
+                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                  }}
+                >
+                  and
+                </span>
+              </div>
+              <h2 className={`text-3xl sm:text-4xl md:text-5xl tracking-wide -mt-1 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                HAMZA
+              </h2>
+              <p className={`text-xs md:text-sm tracking-[0.3em] mt-4 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
+                20<sup>TH</sup> JUNE 2026
+              </p>
+            </div>
+
+            {/* Right - Links, RSVP, Address */}
+            <div className="flex flex-col items-start md:items-end mt-8 md:mt-0 gap-4">
+              {/* Links and RSVP Button */}
+              <div className="flex flex-wrap items-center gap-4 md:gap-6">
+                <a href="#rsvp" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>RSVP</a>
+                <a href="#timeline" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>TIMELINE</a>
+                <a href="#ceremony" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>CEREMONY</a>
+                <a href="#faq" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>FAQ</a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1" target="_blank" rel="noopener noreferrer" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>GET DIRECTIONS</a>
+                <a
+                  href="#rsvp"
+                  className={`px-6 py-2 text-xs tracking-[0.2em] hover:opacity-80 ${playfair.className}`}
+                  style={{ backgroundColor: '#7d1b1b', color: '#e8e4dc' }}
+                >
+                  RSVP NOW
+                </a>
+              </div>
+
+              {/* Address */}
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-xs tracking-[0.1em] hover:opacity-70 ${playfair.className}`}
+                style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}
+              >
+                2120 Rosebank Road, Pickering, ON
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full hover:opacity-70 transition-opacity z-50"
+          style={{ backgroundColor: 'transparent', border: '2px solid #e8e4dc' }}
+          aria-label="Back to top"
+        >
+          <img
+            src="/back to top.svg"
+            alt=""
+            className="w-6 h-6 md:w-7 md:h-7"
+            style={{ filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)' }}
+          />
+        </button>
       )}
-      </div>
-    </section>
-    <section className="section-faq">
-      <h2 className="section-faq-title scroll-animate">Faq</h2>
-      <div className="faq-container">
-        <div className="faq-item scroll-animate scroll-animate-delay-1">
-          <h3 className="faq-question">Can I bring a plus one?</h3>
-          <p className="faq-answer">Just you and your +1, please! Be sure to mention your plus one when you RSVP.</p>
-        </div>
-        <div className="faq-item scroll-animate scroll-animate-delay-2">
-          <h3 className="faq-question">Can I bring my child/children?</h3>
-          <p className="faq-answer">We love your little ones, but this party is adults-only!</p>
-        </div>
-        <div className="faq-item scroll-animate scroll-animate-delay-3">
-          <h3 className="faq-question">Will there be parking at the venue?</h3>
-          <p className="faq-answer">Yes, there are free spaces to park your car. However, parking is limited at the venue so we highly encourage ride sharing!</p>
-        </div>
-        <div className="faq-item scroll-animate scroll-animate-delay-4">
-          <h3 className="faq-question">Can I take photos during the ceremony?</h3>
-          <p className="faq-answer">We&apos;d love for you to be fully present with us during the ceremony, so we kindly ask that phones stay tucked away until afterward. Thank you for helping us keep this moment special!</p>
-        </div>
-        <div className="faq-item scroll-animate scroll-animate-delay-5">
-          <h3 className="faq-question">Will alcohol be served?</h3>
-          <p className="faq-answer">No alcohol will be served at the venue as we are not licensed to have alcohol on the premises. We&apos;ll have plenty of delicious mocktails, refreshments, and other beverages for you to enjoy!</p>
-        </div>
-      </div>
-      <button
-        className="rsvp-link-button faq-rsvp"
-        onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        RSVP NOW
-      </button>
-    </section>
-    <footer className="footer">
-      <Image
-        src="/pink-wreaths-water-color-flower-bouquet.png"
-        alt="Flower bouquet"
-        width={150}
-        height={150}
-        className="footer-flowers-left"
-      />
-      <Image
-        src="/Car.png"
-        alt="Wedding car"
-        width={200}
-        height={100}
-        className="footer-car"
-      />
-      <h2 className="footer-names scroll-animate">Bogdana & Hamza</h2>
-      <p className="footer-date scroll-animate scroll-animate-delay-1">June 20, 2026</p>
-      <p className="footer-dua scroll-animate scroll-animate-delay-2" dir="rtl" lang="ar">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا</p>
-      <p className="footer-dua-translation scroll-animate scroll-animate-delay-2">Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous.</p>
-      <a href="/login" className="footer-login-link scroll-animate scroll-animate-delay-3">Admin Login</a>
-    </footer>
-    {showBackToTop && (
-      <button
-        className="back-to-top"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Back to top"
-      >
-        ↑
-      </button>
-    )}
-    </>
+
+    </main>
   );
 }
