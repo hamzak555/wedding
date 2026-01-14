@@ -322,7 +322,7 @@ export default function DashboardPage() {
       </header>
 
       <div className="dashboard-stats">
-        <div className="stat-card relative overflow-hidden pb-10">
+        <div className="stat-card relative overflow-hidden pb-16">
           <p className={`stat-value ${playfair.className}`}>{submissions.length}</p>
           <p className={`stat-label ${playfair.className}`}>Total RSVPs</p>
           <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
@@ -337,7 +337,7 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-        <div className="stat-card relative overflow-hidden pb-10">
+        <div className="stat-card relative overflow-hidden pb-16">
           <p className={`stat-value ${playfair.className}`}>{totalGuests}</p>
           <p className={`stat-label ${playfair.className}`}>Total Guests</p>
           <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden w-full">
