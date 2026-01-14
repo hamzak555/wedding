@@ -547,7 +547,7 @@ export default function Home() {
 
       {/* Ceremony Section */}
       <section id="ceremony" className="flex items-center justify-center px-4 md:px-24 py-8">
-        <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#e8e4dc' }}>
+        <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center px-6 md:px-12 py-20 md:py-28" style={{ backgroundColor: '#e8e4dc' }}>
           {/* Border pattern at bottom */}
           <div className="absolute bottom-0 left-0 right-0 flex overflow-hidden">
             {[...Array(50)].map((_, i) => (
@@ -560,61 +560,85 @@ export default function Home() {
               />
             ))}
           </div>
-          <div className="max-w-4xl w-full">
-            {/* Nikkah Ceremony */}
-            <div className="text-center mb-16">
-              <div className="relative inline-block mb-6">
-                <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
-                  NIKKAH
-                </h3>
-                <span
-                  className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
-                  style={{
-                    fontFamily: 'var(--font-diploma-script)',
-                    color: '#7d1b1b',
-                    top: '85%',
-                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Ceremony
-                </span>
-              </div>
-              <p className={`text-base leading-relaxed max-w-2xl mx-auto mt-10 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
-                Our ceremony will begin at 4:00 PM at R Garden Boutique located at{' '}
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:opacity-70"
-                >
-                  2120 Rosebank Road, Pickering, ON, L1X 0A1
-                </a>. We kindly ask guests to arrive by 3:00 PM for cocktail hour.
-              </p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            {/* Mobile image - above text */}
+            <div className="md:hidden mb-4">
+              <img
+                src="/Hands.jpg"
+                alt="Hands"
+                className="w-48 h-auto shadow-lg"
+                style={{ transform: 'rotate(5deg)' }}
+              />
             </div>
 
-            {/* The Celebration */}
-            <div className="text-center">
-              <div className="relative inline-block mb-6">
-                <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
-                  THE
-                </h3>
-                <span
-                  className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
-                  style={{
-                    fontFamily: 'var(--font-diploma-script)',
-                    color: '#7d1b1b',
-                    top: '85%',
-                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Celebration
-                </span>
+            {/* Text content */}
+            <div>
+              {/* Nikkah Ceremony */}
+              <div className="text-center md:text-left mb-8">
+                <div className="relative inline-block mb-6">
+                  <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                    NIKKAH
+                  </h3>
+                  <span
+                    className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0"
+                    style={{
+                      fontFamily: 'var(--font-diploma-script)',
+                      color: '#7d1b1b',
+                      top: '85%',
+                      textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Ceremony
+                  </span>
+                </div>
+                <p className={`text-base leading-relaxed max-w-lg mt-10 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
+                  Our ceremony will begin at 4:00 PM at R Garden Boutique located at{' '}
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:opacity-70"
+                  >
+                    2120 Rosebank Road, Pickering, ON, L1X 0A1
+                  </a>. We kindly ask guests to arrive by 3:00 PM for cocktail hour.
+                </p>
               </div>
-              <p className={`text-base leading-relaxed max-w-2xl mx-auto mt-10 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
-                After the ceremony, we invite you to celebrate with cake cutting, dinner, and an evening together, followed by a send-off.
-              </p>
+
+              {/* The Celebration */}
+              <div className="text-center md:text-left">
+                <div className="relative inline-block mb-6">
+                  <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                    THE
+                  </h3>
+                  <span
+                    className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0"
+                    style={{
+                      fontFamily: 'var(--font-diploma-script)',
+                      color: '#7d1b1b',
+                      top: '85%',
+                      textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Celebration
+                  </span>
+                </div>
+                <p className={`text-base leading-relaxed max-w-lg mt-10 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                  After the ceremony, we invite you to celebrate with cake cutting, dinner, and an evening together, followed by a send-off.
+                </p>
+              </div>
+            </div>
+
+            {/* Image centered with both sections */}
+            <div className="flex-shrink-0 hidden md:block">
+              <img
+                src="/Hands.jpg"
+                alt="Hands"
+                className="w-64 h-auto shadow-lg"
+                style={{ transform: 'rotate(5deg)' }}
+              />
             </div>
           </div>
         </div>
