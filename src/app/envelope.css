@@ -2260,7 +2260,7 @@
 /* Login Page Styles */
 .login-page {
   min-height: 100vh;
-  background: transparent;
+  background: #7d1b1b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2270,32 +2270,31 @@
 .login-container {
   width: 100%;
   max-width: 400px;
-  background: rgba(101, 2, 3, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(101, 2, 3, 0.15);
-  border-radius: 16px;
+  background: #e8e4dc;
+  border: none;
+  border-radius: 0;
   padding: 2.5rem;
-  box-shadow: 0 8px 32px rgba(53, 5, 2, 0.1);
+  box-shadow: 0 8px 32px rgba(125, 27, 27, 0.3);
 }
 
 .login-back-link {
   display: inline-block;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: rgba(53, 5, 2, 0.7);
+  color: rgba(125, 27, 27, 0.7);
   text-decoration: none;
   margin-bottom: 1.5rem;
   transition: color 0.2s ease;
 }
 
 .login-back-link:hover {
-  color: #350502;
+  color: #7d1b1b;
 }
 
 .login-title {
   font-family: var(--font-ragitha), cursive;
   font-size: 2.5rem;
-  color: #350502;
+  color: #7d1b1b;
   text-align: center;
   margin: 0 0 0.5rem 0;
 }
@@ -2303,7 +2302,7 @@
 .login-subtitle {
   font-family: sans-serif;
   font-size: 1rem;
-  color: rgba(53, 5, 2, 0.8);
+  color: rgba(125, 27, 27, 0.8);
   text-align: center;
   margin: 0 0 2rem 0;
 }
@@ -2315,13 +2314,13 @@
 }
 
 .login-error {
-  background: rgba(255, 100, 100, 0.2);
-  border: 1px solid rgba(255, 100, 100, 0.4);
-  border-radius: 8px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 0;
   padding: 0.75rem 1rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: #ffcccb;
+  color: #991b1b;
 }
 
 .login-field {
@@ -2333,30 +2332,31 @@
 .login-field label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: #350502;
+  color: #7d1b1b;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .login-field input {
   padding: 0.875rem 1rem;
   font-family: sans-serif;
   font-size: 1rem;
-  border: 1px solid rgba(101, 2, 3, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #350502;
-  backdrop-filter: blur(5px);
+  border: 1px solid #7d1b1b;
+  border-radius: 0;
+  background: transparent;
+  color: #7d1b1b;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .login-field input::placeholder {
-  color: rgba(53, 5, 2, 0.4);
+  color: rgba(125, 27, 27, 0.4);
 }
 
 .login-field input:focus {
   outline: none;
-  border-color: rgba(101, 2, 3, 0.5);
-  background: rgba(255, 255, 255, 0.9);
+  border-color: #7d1b1b;
+  background: rgba(125, 27, 27, 0.05);
 }
 
 .login-button {
@@ -2364,18 +2364,19 @@
   font-family: sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: #4a0302;
-  background: #f5e6d3;
+  color: #e8e4dc;
+  background: #7d1b1b;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }
 
 .login-button:hover:not(:disabled) {
-  background: #efe0cf;
-  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 .login-button:disabled {
@@ -2386,7 +2387,7 @@
 /* Dashboard Styles */
 .dashboard-page {
   min-height: 100vh;
-  background: transparent;
+  background: #7d1b1b;
   padding: 2rem;
 }
 
@@ -2403,7 +2404,7 @@
 .dashboard-title {
   font-family: var(--font-ragitha), cursive;
   font-size: 2.5rem;
-  color: #350502;
+  color: #e8e4dc;
   margin: 0;
 }
 
@@ -2411,18 +2412,20 @@
   padding: 0.5rem 1.25rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: #350502;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(101, 2, 3, 0.2);
-  border-radius: 6px;
+  color: #e8e4dc;
+  background: transparent;
+  border: 1px solid #e8e4dc;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .dashboard-logout:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(101, 2, 3, 0.3);
+  background: #e8e4dc;
+  color: #7d1b1b;
 }
 
 .dashboard-stats {
@@ -2434,10 +2437,9 @@
 }
 
 .stat-card {
-  background: rgba(101, 2, 3, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(101, 2, 3, 0.15);
-  border-radius: 12px;
+  background: #e8e4dc;
+  border: none;
+  border-radius: 0;
   padding: 1.5rem;
   text-align: center;
 }
@@ -2446,15 +2448,17 @@
   font-family: sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #650203;
+  color: #7d1b1b;
   margin: 0;
 }
 
 .stat-label {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: rgba(53, 5, 2, 0.8);
+  color: rgba(125, 27, 27, 0.8);
   margin: 0.5rem 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .dashboard-content {
@@ -2472,7 +2476,7 @@
 .dashboard-section-title {
   font-family: var(--font-ragitha), cursive;
   font-size: 2rem;
-  color: #350502;
+  color: #e8e4dc;
   margin: 0;
 }
 
@@ -2488,24 +2492,23 @@
   padding: 0.6rem 1rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: #350502;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(101, 2, 3, 0.2);
-  border-radius: 8px;
+  color: #e8e4dc;
+  background: transparent;
+  border: 1px solid #e8e4dc;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .export-button:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: #e8e4dc;
+  color: #7d1b1b;
 }
 
 .rsvp-table-container {
-  background: rgba(101, 2, 3, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(101, 2, 3, 0.15);
-  border-radius: 16px;
+  background: #e8e4dc;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -2519,21 +2522,21 @@
   padding: 1rem 1.25rem;
   text-align: left;
   font-family: sans-serif;
-  border-bottom: 1px solid rgba(101, 2, 3, 0.1);
+  border-bottom: 1px solid rgba(125, 27, 27, 0.15);
 }
 
 .rsvp-table th {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #650203;
+  color: #7d1b1b;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: rgba(101, 2, 3, 0.05);
+  background: rgba(125, 27, 27, 0.08);
 }
 
 .rsvp-table td {
   font-size: 0.95rem;
-  color: #350502;
+  color: #7d1b1b;
 }
 
 .rsvp-table tr:last-child td {
@@ -2541,12 +2544,12 @@
 }
 
 .rsvp-table tr:hover td {
-  background: rgba(101, 2, 3, 0.05);
+  background: rgba(125, 27, 27, 0.05);
 }
 
 .guest-list {
   font-size: 0.85rem;
-  color: rgba(53, 5, 2, 0.8);
+  color: rgba(125, 27, 27, 0.8);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2557,14 +2560,14 @@
 }
 
 .guest-dietary {
-  color: rgba(53, 5, 2, 0.6);
+  color: rgba(125, 27, 27, 0.6);
   font-style: italic;
 }
 
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: rgba(53, 5, 2, 0.7);
+  color: rgba(125, 27, 27, 0.7);
   font-family: sans-serif;
   font-size: 1rem;
 }
@@ -2572,7 +2575,7 @@
 .loading-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: #350502;
+  color: #7d1b1b;
   font-family: sans-serif;
   font-size: 1rem;
 }
@@ -2584,24 +2587,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffcccb;
-  background: rgba(255, 100, 100, 0.2);
-  border: 1px solid rgba(255, 100, 100, 0.4);
-  border-radius: 6px;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .delete-button:hover {
-  background: rgba(255, 100, 100, 0.4);
-  border-color: rgba(255, 100, 100, 0.6);
+  background: rgba(220, 38, 38, 0.2);
+  border-color: rgba(220, 38, 38, 0.5);
 }
 
 /* Alert Dialog Styles */
 .alert-dialog-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(125, 27, 27, 0.8);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -2635,13 +2638,13 @@
 }
 
 .alert-dialog-content {
-  background: #4a0302;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
+  background: #e8e4dc;
+  border: none;
+  border-radius: 0;
   padding: 1.5rem;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
 }
 
 .alert-dialog-content.edit-dialog-content {
@@ -2665,14 +2668,14 @@
   font-family: sans-serif;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
+  color: #7d1b1b;
   margin: 0 0 0.5rem 0;
 }
 
 .alert-dialog-description {
   font-family: sans-serif;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(125, 27, 27, 0.8);
   margin: 0;
   line-height: 1.5;
 }
@@ -2689,17 +2692,16 @@
   font-family: sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  color: #7d1b1b;
+  background: transparent;
+  border: 1px solid #7d1b1b;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .alert-dialog-cancel:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(125, 27, 27, 0.1);
 }
 
 .alert-dialog-action {
@@ -2707,16 +2709,16 @@
   font-family: sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
-  color: white;
-  background: rgba(220, 38, 38, 0.8);
-  border: 1px solid rgba(220, 38, 38, 0.9);
-  border-radius: 8px;
+  color: #e8e4dc;
+  background: #dc2626;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .alert-dialog-action:hover {
-  background: rgba(220, 38, 38, 1);
+  background: #b91c1c;
 }
 
 /* Edit Dialog Styles */
@@ -2737,29 +2739,31 @@
 .edit-field label {
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #7d1b1b;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .edit-field input {
   padding: 0.75rem 1rem;
   font-family: sans-serif;
   font-size: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 1px solid #7d1b1b;
+  border-radius: 0;
+  background: transparent;
+  color: #7d1b1b;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .edit-field input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(125, 27, 27, 0.4);
 }
 
 .edit-field input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.15);
+  border-color: #7d1b1b;
+  background: rgba(125, 27, 27, 0.05);
 }
 
 .edit-guests-section {
@@ -2776,30 +2780,32 @@
 .edit-guests-header label {
   font-family: sans-serif;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #7d1b1b;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .add-guest-button {
   padding: 0.4rem 0.75rem;
   font-family: sans-serif;
   font-size: 0.8rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
+  color: #7d1b1b;
+  background: transparent;
+  border: 1px solid #7d1b1b;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .add-guest-button:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(125, 27, 27, 0.1);
 }
 
 .edit-guest-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
+  background: rgba(125, 27, 27, 0.05);
+  border: 1px solid rgba(125, 27, 27, 0.2);
+  border-radius: 0;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
   display: flex;
@@ -2816,7 +2822,7 @@
 .edit-guest-header span {
   font-family: sans-serif;
   font-size: 0.8rem;
-  color: #f5e6d3;
+  color: #7d1b1b;
   font-weight: 500;
 }
 
@@ -2826,10 +2832,10 @@
   padding: 0;
   padding-bottom: 3px;
   font-size: 1rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+  color: #7d1b1b;
+  background: transparent;
+  border: 1px solid rgba(125, 27, 27, 0.3);
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -2839,29 +2845,30 @@
 }
 
 .remove-guest-button:hover {
-  background: rgba(255, 100, 100, 0.3);
-  border-color: rgba(255, 100, 100, 0.5);
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #dc2626;
 }
 
 .edit-guest-card input {
   padding: 0.6rem 0.75rem;
   font-family: sans-serif;
   font-size: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
+  border: 1px solid rgba(125, 27, 27, 0.3);
+  border-radius: 0;
+  background: transparent;
+  color: #7d1b1b;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .edit-guest-card input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(125, 27, 27, 0.4);
 }
 
 .edit-guest-card input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+  border-color: #7d1b1b;
+  background: rgba(125, 27, 27, 0.05);
 }
 
 .save-button {
@@ -2869,16 +2876,16 @@
   font-family: sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #4a0302;
-  background: #f5e6d3;
+  color: #e8e4dc;
+  background: #7d1b1b;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .save-button:hover:not(:disabled) {
-  background: #efe0cf;
+  opacity: 0.9;
 }
 
 .save-button:disabled {
@@ -2898,17 +2905,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #a5d6a7;
-  background: rgba(76, 175, 80, 0.2);
-  border: 1px solid rgba(76, 175, 80, 0.4);
-  border-radius: 6px;
+  color: #7d1b1b;
+  background: rgba(125, 27, 27, 0.1);
+  border: 1px solid rgba(125, 27, 27, 0.3);
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .edit-button:hover {
-  background: rgba(76, 175, 80, 0.4);
-  border-color: rgba(76, 175, 80, 0.6);
+  background: rgba(125, 27, 27, 0.2);
+  border-color: rgba(125, 27, 27, 0.5);
 }
 
 @media (max-width: 768px) {

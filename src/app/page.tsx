@@ -89,10 +89,10 @@ export default function Home() {
           }}
         >
           {/* Decorative corners */}
-          <img src="/Hero Corner.svg" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-12 md:h-24" />
-          <img src="/Hero Corner.svg" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-12 md:h-24" style={{ transform: 'rotate(90deg)' }} />
-          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-12 md:h-24" style={{ transform: 'rotate(-90deg)' }} />
-          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-12 md:h-24" style={{ transform: 'rotate(180deg)' }} />
+          <img src="/Hero Corner.svg" alt="" className="absolute top-2 left-2 md:top-4 md:left-4 h-12 md:h-24" style={{ transform: 'scaleX(-1)' }} />
+          <img src="/Hero Corner.svg" alt="" className="absolute top-2 right-2 md:top-4 md:right-4 h-12 md:h-24" />
+          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 left-2 md:bottom-4 md:left-4 h-12 md:h-24" style={{ transform: 'rotate(180deg)' }} />
+          <img src="/Hero Corner.svg" alt="" className="absolute bottom-2 right-2 md:bottom-4 md:right-4 h-12 md:h-24" style={{ transform: 'rotate(180deg) scaleX(-1)' }} />
 
 
           {/* Navigation */}
@@ -179,13 +179,13 @@ export default function Home() {
         {/* Overlapping images on the right - hidden on mobile */}
         <div className="hidden md:block relative group cursor-pointer">
           <img
-            src="/LEFT.jpg"
+            src="/RIGHT.jpg"
             alt=""
             className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
             style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
           />
           <img
-            src="/RIGHT.jpg"
+            src="/LEFT.jpg"
             alt=""
             className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
             style={{ transform: 'rotate(5deg)' }}
@@ -595,14 +595,14 @@ export default function Home() {
                   style={{
                     fontFamily: 'var(--font-diploma-script)',
                     color: '#7d1b1b',
-                    top: '68%',
-                    textShadow: '-2px -2px 0 #e8e4dc, 2px -2px 0 #e8e4dc, -2px 2px 0 #e8e4dc, 2px 2px 0 #e8e4dc',
+                    top: '82%',
+                    textShadow: '-1px -1px 0 #e8e4dc, 1px -1px 0 #e8e4dc, -1px 1px 0 #e8e4dc, 1px 1px 0 #e8e4dc',
                   }}
                 >
                   and
                 </span>
               </div>
-              <h2 className={`text-3xl sm:text-4xl md:text-5xl tracking-wide -mt-1 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+              <h2 className={`text-3xl sm:text-4xl md:text-5xl tracking-wide mt-2 ${playfair.className}`} style={{ color: '#7d1b1b' }}>
                 HAMZA
               </h2>
               <p className={`text-xs md:text-sm tracking-[0.3em] mt-4 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
@@ -619,6 +619,7 @@ export default function Home() {
                 <a href="#ceremony" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>CEREMONY</a>
                 <a href="#faq" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>FAQ</a>
                 <a href="https://www.google.com/maps/dir/?api=1&destination=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1" target="_blank" rel="noopener noreferrer" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>GET DIRECTIONS</a>
+                <a href="/login" className={`text-xs tracking-[0.15em] hover:opacity-70 ${playfair.className}`} style={{ color: '#7d1b1b' }}>LOGIN</a>
                 <a
                   href="#rsvp"
                   className={`px-6 py-2 text-xs tracking-[0.2em] hover:opacity-80 ${playfair.className}`}
