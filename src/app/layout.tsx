@@ -52,11 +52,20 @@ export const metadata: Metadata = {
     siteName: "Bogdana & Hamza Wedding",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/Wedding%20Invite%20Card.png",
+        width: 1200,
+        height: 630,
+        alt: "Bogdana & Hamza Wedding Invitation",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Bogdana & Hamza | Wedding Celebration",
     description: "Join us in celebrating the wedding of Bogdana and Hamza on June 20, 2026.",
+    images: ["/Wedding%20Invite%20Card.png"],
   },
   keywords: ["wedding", "Bogdana", "Hamza", "celebration", "June 2026"],
 };
