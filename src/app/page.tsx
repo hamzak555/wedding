@@ -79,13 +79,12 @@ export default function Home() {
   return (
     <main className="min-h-screen" style={{ backgroundColor: '#7d1b1b' }}>
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 md:px-24 py-4 md:py-8">
+      <section className="flex items-center justify-center px-4 md:px-24 py-4 md:py-8 min-h-[auto] md:min-h-screen">
         {/* Cream inner frame */}
         <div
-          className="relative w-full max-w-[95vw] md:max-w-[85vw] mx-auto flex flex-col"
+          className="relative w-full max-w-[95vw] md:max-w-[85vw] mx-auto flex flex-col min-h-[70svh] md:min-h-[calc(100vh-4rem)]"
           style={{
             backgroundColor: '#e8e4dc',
-            minHeight: 'calc(100vh - 2rem)',
           }}
         >
           {/* Decorative corners */}
@@ -133,7 +132,9 @@ export default function Home() {
           {/* Date and Address at bottom */}
           <div className="pb-6 md:pb-10 text-center">
             <p className={`text-sm md:text-lg tracking-[0.3em] ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
-              20<sup>TH</sup> JUNE 2026 <span className="mx-2 md:mx-4">|</span> 2120 ROSEBANK ROAD, PICKERING
+              <span className="block md:inline">20<sup>TH</sup> JUNE 2026</span>
+              <span className="hidden md:inline mx-4">|</span>
+              <span className="block md:inline mt-1 md:mt-0">2120 ROSEBANK ROAD<span className="hidden md:inline">, PICKERING</span></span>
             </p>
           </div>
         </div>
@@ -176,20 +177,38 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Overlapping images on the right - hidden on mobile */}
-        <div className="hidden md:block relative group cursor-pointer">
-          <img
-            src="/RIGHT.jpg"
-            alt=""
-            className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
-            style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
-          />
-          <img
-            src="/LEFT.jpg"
-            alt=""
-            className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
-            style={{ transform: 'rotate(5deg)' }}
-          />
+        {/* Overlapping images - below on mobile, right side on desktop */}
+        <div className="relative group cursor-pointer mt-8 md:mt-0">
+          {/* Mobile: side by side images */}
+          <div className="flex md:hidden gap-4 justify-center">
+            <img
+              src="/RIGHT.jpg"
+              alt=""
+              className="w-36 h-auto object-cover shadow-lg"
+              style={{ transform: 'rotate(-5deg)' }}
+            />
+            <img
+              src="/LEFT.jpg"
+              alt=""
+              className="w-36 h-auto object-cover shadow-lg"
+              style={{ transform: 'rotate(5deg)' }}
+            />
+          </div>
+          {/* Desktop: overlapping images */}
+          <div className="hidden md:block">
+            <img
+              src="/RIGHT.jpg"
+              alt=""
+              className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
+              style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
+            />
+            <img
+              src="/LEFT.jpg"
+              alt=""
+              className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
+              style={{ transform: 'rotate(5deg)' }}
+            />
+          </div>
         </div>
         </div>
       </section>
@@ -349,14 +368,14 @@ export default function Home() {
 
       {/* Timeline Section */}
       <section id="timeline" className="flex items-center justify-center px-4 md:px-24 py-8">
-        <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: '#7d1b1b' }}>
+        <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6 md:px-12 py-10 md:py-24" style={{ backgroundColor: '#7d1b1b' }}>
           {/* Title */}
           <div className="relative mb-12 md:mb-16">
             <div className="flex items-center justify-center gap-3 md:gap-4">
               <img
                 src="/Timeline Icon.svg"
                 alt=""
-                className="h-6 md:h-8 lg:h-10 mt-2"
+                className="hidden md:block h-8 lg:h-10 mt-2"
                 style={{ filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)', transform: 'rotate(-90deg)' }}
               />
               <div className="relative">
@@ -379,15 +398,40 @@ export default function Home() {
               <img
                 src="/Timeline Icon.svg"
                 alt=""
-                className="h-6 md:h-8 lg:h-10 mt-2"
+                className="hidden md:block h-8 lg:h-10 mt-2"
                 style={{ filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)', transform: 'rotate(90deg)' }}
               />
             </div>
           </div>
 
-          {/* Horizontal Timeline */}
-          <div className="w-full overflow-x-auto pb-4 mt-8 md:mt-12 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <div className="flex justify-between items-start min-w-[800px] px-8">
+          {/* Mobile Vertical Timeline */}
+          <div className="md:hidden mt-8 w-full px-4">
+            <div className="relative pt-10 pb-10">
+              {/* Continuous vertical line */}
+              <div className="absolute left-1/2 top-6 bottom-6 w-[2px]" style={{ backgroundColor: '#e8e4dc', transform: 'translateX(-50%)' }} />
+
+              {/* Top icon */}
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="absolute h-6 top-4 left-1/2"
+                style={{
+                  transform: 'translateX(-50%)',
+                  filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)'
+                }}
+              />
+
+              {/* Bottom icon */}
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="absolute h-6 bottom-4 left-1/2"
+                style={{
+                  transform: 'translateX(-50%) rotate(180deg)',
+                  filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)'
+                }}
+              />
+
               {[
                 { time: '3:00 PM', event: 'Cocktail Hour' },
                 { time: '4:00 PM', event: 'Nikkah' },
@@ -395,29 +439,107 @@ export default function Home() {
                 { time: '6:00 PM', event: 'Dinner' },
                 { time: '8:00 PM', event: 'Party' },
                 { time: '10:00 PM', event: 'Send Off' },
-              ].map((item, index, arr) => (
-                <div key={index} className="flex flex-col items-center flex-1 relative">
+              ].map((item, index) => (
+                <div key={index} className="grid grid-cols-[1fr_auto_1fr] items-center py-3">
                   {/* Time */}
-                  <span className={`text-xs md:text-sm tracking-wide mb-4 ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums' }}>
+                  <span className={`text-sm tracking-wide text-right pr-4 whitespace-nowrap ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums', transform: 'translateY(-2px)' }}>
                     {item.time}
                   </span>
 
-                  {/* Dot with connecting line */}
-                  <div className="relative flex items-center justify-center w-full">
-                    {/* Line segment */}
-                    {index < arr.length - 1 && (
-                      <div className="absolute left-1/2 w-full h-[2px]" style={{ backgroundColor: '#e8e4dc' }} />
-                    )}
-                    {/* Dot */}
-                    <div className="w-3 h-3 rounded-full relative z-10" style={{ backgroundColor: '#e8e4dc' }} />
-                  </div>
+                  {/* Dot */}
+                  <div className="w-3 h-3 rounded-full relative z-10" style={{ backgroundColor: '#e8e4dc' }} />
 
                   {/* Event name */}
-                  <span className="text-lg md:text-xl text-center mt-4" style={{ fontFamily: 'var(--font-diploma-script)', color: '#e8e4dc' }}>
+                  <span className="text-2xl pl-4" style={{ fontFamily: 'var(--font-diploma-script)', color: '#e8e4dc', transform: 'translateY(4px)' }}>
                     {item.event}
                   </span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Desktop Horizontal Timeline */}
+          <div className="hidden md:block w-full pb-4 mt-12 px-12">
+            {/* Time row */}
+            <div className="flex justify-between mb-4">
+              <div className="w-6" /> {/* Spacer for left icon */}
+              {[
+                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '4:00 PM', event: 'Nikkah' },
+                { time: '5:00 PM', event: 'Cake Cutting' },
+                { time: '6:00 PM', event: 'Dinner' },
+                { time: '8:00 PM', event: 'Party' },
+                { time: '10:00 PM', event: 'Send Off' },
+              ].map((item, index) => (
+                <span key={index} className={`text-sm tracking-wide text-center flex-1 ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums' }}>
+                  {item.time}
+                </span>
+              ))}
+              <div className="w-6" /> {/* Spacer for right icon */}
+            </div>
+
+            {/* Line and dots row */}
+            <div className="flex items-center">
+              {/* Left icon */}
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="h-6"
+                style={{
+                  filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)',
+                  transform: 'rotate(-90deg)'
+                }}
+              />
+
+              {/* Line with dots */}
+              <div className="flex-1 relative flex items-center">
+                {/* Continuous horizontal line */}
+                <div className="absolute left-0 right-0 h-[2px]" style={{ backgroundColor: '#e8e4dc' }} />
+
+                <div className="flex justify-between w-full">
+                  {[
+                    { time: '3:00 PM', event: 'Cocktail Hour' },
+                    { time: '4:00 PM', event: 'Nikkah' },
+                    { time: '5:00 PM', event: 'Cake Cutting' },
+                    { time: '6:00 PM', event: 'Dinner' },
+                    { time: '8:00 PM', event: 'Party' },
+                    { time: '10:00 PM', event: 'Send Off' },
+                  ].map((item, index) => (
+                    <div key={index} className="flex-1 flex justify-center">
+                      <div className="w-3 h-3 rounded-full relative z-10" style={{ backgroundColor: '#e8e4dc' }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right icon */}
+              <img
+                src="/Timeline Icon.svg"
+                alt=""
+                className="h-6"
+                style={{
+                  filter: 'brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(337%) hue-rotate(336deg) brightness(103%) contrast(87%)',
+                  transform: 'rotate(90deg)'
+                }}
+              />
+            </div>
+
+            {/* Event names row */}
+            <div className="flex justify-between mt-4">
+              <div className="w-6" /> {/* Spacer for left icon */}
+              {[
+                { time: '3:00 PM', event: 'Cocktail Hour' },
+                { time: '4:00 PM', event: 'Nikkah' },
+                { time: '5:00 PM', event: 'Cake Cutting' },
+                { time: '6:00 PM', event: 'Dinner' },
+                { time: '8:00 PM', event: 'Party' },
+                { time: '10:00 PM', event: 'Send Off' },
+              ].map((item, index) => (
+                <span key={index} className="text-2xl lg:text-3xl text-center flex-1" style={{ fontFamily: 'var(--font-diploma-script)', color: '#e8e4dc' }}>
+                  {item.event}
+                </span>
+              ))}
+              <div className="w-6" /> {/* Spacer for right icon */}
             </div>
           </div>
         </div>
@@ -442,11 +564,11 @@ export default function Home() {
             {/* Nikkah Ceremony */}
             <div className="text-center mb-16">
               <div className="relative inline-block mb-6">
-                <h3 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
                   NIKKAH
                 </h3>
                 <span
-                  className="absolute text-3xl sm:text-4xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
+                  className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
                   style={{
                     fontFamily: 'var(--font-diploma-script)',
                     color: '#7d1b1b',
@@ -474,11 +596,11 @@ export default function Home() {
             {/* The Celebration */}
             <div className="text-center">
               <div className="relative inline-block mb-6">
-                <h3 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
+                <h3 className={`text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-wide ${playfair.className}`} style={{ color: '#7d1b1b' }}>
                   THE
                 </h3>
                 <span
-                  className="absolute text-3xl sm:text-4xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
+                  className="absolute text-5xl sm:text-5xl md:text-5xl lg:text-6xl left-1/2 -translate-x-1/2"
                   style={{
                     fontFamily: 'var(--font-diploma-script)',
                     color: '#7d1b1b',

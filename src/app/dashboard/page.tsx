@@ -58,6 +58,10 @@ export default function DashboardPage() {
     email: "",
     guests: [] as EditGuest[],
   });
+  const [sortConfig, setSortConfig] = useState<{
+    key: "name" | "email" | "guests" | "created_at";
+    direction: "asc" | "desc";
+  }>({ key: "created_at", direction: "desc" });
   const router = useRouter();
   const supabase = createClient();
 
@@ -105,12 +109,14 @@ export default function DashboardPage() {
 
   const handleDelete = async () => {
     try {
-      const { error } = await supabase
-        .from("rsvps")
-        .delete()
-        .eq("id", deleteDialog.id);
+      const response = await fetch(`/api/rsvps/${deleteDialog.id}`, {
+        method: "DELETE",
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to delete");
+      }
 
       setSubmissions(submissions.filter((sub) => sub.id !== deleteDialog.id));
       closeDeleteDialog();
@@ -174,18 +180,24 @@ export default function DashboardPage() {
     }
 
     try {
-      const { error } = await supabase
-        .from("rsvps")
-        .update({
+      const response = await fetch(`/api/rsvps/${editDialog.submission.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           name: editForm.name,
           email: editForm.email,
           guests: editForm.guests.map((g) => ({
             name: g.name,
           })),
-        })
-        .eq("id", editDialog.submission.id);
+        }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to update");
+      }
 
       setSubmissions(
         submissions.map((sub) =>
@@ -215,6 +227,37 @@ export default function DashboardPage() {
     (guest) => guest.name.trim() === ""
   );
 
+  const handleSort = (key: "name" | "email" | "guests" | "created_at") => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  const sortedSubmissions = [...submissions].sort((a, b) => {
+    const { key, direction } = sortConfig;
+    let comparison = 0;
+
+    if (key === "name" || key === "email") {
+      comparison = a[key].localeCompare(b[key]);
+    } else if (key === "guests") {
+      const aGuests = 1 + (a.guests?.length || 0);
+      const bGuests = 1 + (b.guests?.length || 0);
+      comparison = aGuests - bGuests;
+    } else if (key === "created_at") {
+      comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+    }
+
+    return direction === "asc" ? comparison : -comparison;
+  });
+
+  const SortIcon = ({ columnKey }: { columnKey: "name" | "email" | "guests" | "created_at" }) => {
+    if (sortConfig.key !== columnKey) {
+      return <span className="sort-icon">↕</span>;
+    }
+    return <span className="sort-icon">{sortConfig.direction === "asc" ? "↑" : "↓"}</span>;
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
@@ -228,17 +271,17 @@ export default function DashboardPage() {
   const exportToCSV = () => {
     const headers = ["Name", "Email", "Additional Guests", "Total Guests", "Submitted"];
 
-    const rows = submissions.map((sub) => {
+    const rows = sortedSubmissions.map((sub) => {
       const guestsList = sub.guests && sub.guests.length > 0
         ? sub.guests.map(g => g.name).join("; ")
         : "";
-      const totalGuests = 1 + (sub.guests?.length || 0);
+      const totalGuestsCount = 1 + (sub.guests?.length || 0);
 
       return [
         sub.name,
         sub.email,
         guestsList,
-        totalGuests.toString(),
+        totalGuestsCount.toString(),
         formatDate(sub.created_at)
       ];
     });
@@ -252,7 +295,7 @@ export default function DashboardPage() {
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `rsvp-submissions-${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute("download", `wedding-rsvp-${new Date().toISOString().split("T")[0]}.csv`);
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
@@ -262,18 +305,40 @@ export default function DashboardPage() {
   const exportToPDF = () => {
     const doc = new jsPDF();
 
-    // Add title
-    doc.setFontSize(20);
-    doc.text("RSVP Submissions", 14, 22);
+    // Brand colors
+    const maroon: [number, number, number] = [125, 27, 27];
+    const cream: [number, number, number] = [232, 228, 220];
+    const lightCream: [number, number, number] = [245, 243, 239];
 
-    // Add summary
-    doc.setFontSize(12);
-    doc.text(`Total RSVPs: ${submissions.length}`, 14, 32);
-    doc.text(`Total Guests: ${totalGuests}`, 14, 40);
-    doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 48);
+    // Add decorative header bar
+    doc.setFillColor(...maroon);
+    doc.rect(0, 0, 210, 8, "F");
+
+    // Add title
+    doc.setTextColor(...maroon);
+    doc.setFontSize(24);
+    doc.text("BOGDANA & HAMZA", 105, 22, { align: "center" });
+
+    doc.setFontSize(14);
+    doc.text("Wedding RSVP Submissions", 105, 32, { align: "center" });
+
+    // Add decorative line
+    doc.setDrawColor(...maroon);
+    doc.setLineWidth(0.5);
+    doc.line(60, 38, 150, 38);
+
+    // Add summary box
+    doc.setFillColor(...cream);
+    doc.roundedRect(14, 45, 182, 20, 2, 2, "F");
+
+    doc.setFontSize(11);
+    doc.setTextColor(...maroon);
+    doc.text(`Total RSVPs: ${submissions.length}`, 24, 56);
+    doc.text(`Total Guests: ${totalGuests}`, 90, 56);
+    doc.text(`Generated: ${new Date().toLocaleDateString()}`, 150, 56);
 
     // Prepare table data
-    const tableData = submissions.map((sub) => {
+    const tableData = sortedSubmissions.map((sub) => {
       const guestsList = sub.guests && sub.guests.length > 0
         ? sub.guests.map(g => g.name).join("\n")
         : "-";
@@ -288,28 +353,38 @@ export default function DashboardPage() {
     });
 
     autoTable(doc, {
-      startY: 55,
+      startY: 72,
       head: [["Name", "Email", "Additional Guests", "Total", "Submitted"]],
       body: tableData,
       styles: {
         fontSize: 9,
-        cellPadding: 3,
+        cellPadding: 4,
+        textColor: maroon,
       },
       headStyles: {
-        fillColor: [125, 27, 27],
-        textColor: 255,
+        fillColor: maroon,
+        textColor: [255, 255, 255],
         fontStyle: "bold",
+        fontSize: 9,
+      },
+      alternateRowStyles: {
+        fillColor: lightCream,
       },
       columnStyles: {
         0: { cellWidth: 35 },
         1: { cellWidth: 50 },
         2: { cellWidth: 50 },
-        3: { cellWidth: 20 },
+        3: { cellWidth: 20, halign: "center" },
         4: { cellWidth: 35 },
       },
     });
 
-    doc.save(`rsvp-submissions-${new Date().toISOString().split("T")[0]}.pdf`);
+    // Add footer
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFillColor(...maroon);
+    doc.rect(0, pageHeight - 8, 210, 8, "F");
+
+    doc.save(`wedding-rsvp-${new Date().toISOString().split("T")[0]}.pdf`);
   };
 
   return (
@@ -431,16 +506,24 @@ export default function DashboardPage() {
             <table className={`rsvp-table ${playfair.className}`}>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
+                  <th className="sortable-header" onClick={() => handleSort("name")}>
+                    Name <SortIcon columnKey="name" />
+                  </th>
+                  <th className="sortable-header" onClick={() => handleSort("email")}>
+                    Email <SortIcon columnKey="email" />
+                  </th>
                   <th>Additional Guests</th>
-                  <th>Total Guests</th>
-                  <th>Submitted</th>
+                  <th className="sortable-header" onClick={() => handleSort("guests")}>
+                    Total Guests <SortIcon columnKey="guests" />
+                  </th>
+                  <th className="sortable-header" onClick={() => handleSort("created_at")}>
+                    Submitted <SortIcon columnKey="created_at" />
+                  </th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {submissions.map((submission) => (
+                {sortedSubmissions.map((submission) => (
                   <tr key={submission.id}>
                     <td>{submission.name}</td>
                     <td>{submission.email}</td>
