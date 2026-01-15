@@ -183,28 +183,17 @@ export default function Home() {
         </div>
 
         {/* Overlapping images - below on mobile, right side on desktop */}
-        <div className="relative group cursor-pointer mt-8 md:mt-0">
+        <div className={`relative group cursor-pointer ${showFlowerImages ? 'hidden md:block' : 'mt-8 md:mt-0'}`}>
           {showFlowerImages ? (
-            <>
-              {/* Single flower for mobile */}
-              <div className="flex md:hidden justify-center">
-                <img
-                  src="/Flower.svg"
-                  alt=""
-                  className="w-48 h-auto"
-                  style={{ filter: 'brightness(0) saturate(100%) invert(10%) sepia(50%) saturate(2000%) hue-rotate(340deg) brightness(70%)', transform: 'rotate(15deg)' }}
-                />
-              </div>
-              {/* Single flower for desktop */}
-              <div className="hidden md:flex justify-center">
-                <img
-                  src="/Flower.svg"
-                  alt=""
-                  className="w-72 h-auto"
-                  style={{ filter: 'brightness(0) saturate(100%) invert(10%) sepia(50%) saturate(2000%) hue-rotate(340deg) brightness(70%)', transform: 'rotate(15deg)' }}
-                />
-              </div>
-            </>
+            /* Single flower for desktop only */
+            <div className="flex justify-center">
+              <img
+                src="/Flower.svg"
+                alt=""
+                className="w-72 h-auto"
+                style={{ filter: 'brightness(0) saturate(100%) invert(10%) sepia(50%) saturate(2000%) hue-rotate(340deg) brightness(70%)', transform: 'rotate(15deg)' }}
+              />
+            </div>
           ) : (
             <>
               {/* Mobile: side by side images */}
