@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Playfair_Display, Great_Vibes } from 'next/font/google';
 import { createClient } from '@/lib/supabase/client';
@@ -20,7 +20,7 @@ interface Guest {
   name: string;
 }
 
-export default function Home() {
+function HomeContent() {
   // RSVP form state
   const [rsvpName, setRsvpName] = useState("");
   const [rsvpEmail, setRsvpEmail] = useState("");
@@ -827,5 +827,13 @@ export default function Home() {
       )}
 
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ backgroundColor: '#7d1b1b' }} />}>
+      <HomeContent />
+    </Suspense>
   );
 }
