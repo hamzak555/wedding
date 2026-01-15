@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Playfair_Display, Great_Vibes } from 'next/font/google';
 import { createClient } from '@/lib/supabase/client';
 
@@ -28,6 +29,10 @@ export default function Home() {
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const supabase = createClient();
+
+  // Check for ?fl parameter in URL
+  const searchParams = useSearchParams();
+  const showFlowerImages = searchParams.has('fl');
 
   // Show/hide back to top button based on scroll
   useEffect(() => {
@@ -179,36 +184,61 @@ export default function Home() {
 
         {/* Overlapping images - below on mobile, right side on desktop */}
         <div className="relative group cursor-pointer mt-8 md:mt-0">
-          {/* Mobile: side by side images */}
-          <div className="flex md:hidden gap-4 justify-center">
-            <img
-              src="/RIGHT.jpg"
-              alt=""
-              className="w-36 h-auto object-cover shadow-lg"
-              style={{ transform: 'rotate(-5deg)' }}
-            />
-            <img
-              src="/LEFT.jpg"
-              alt=""
-              className="w-36 h-auto object-cover shadow-lg"
-              style={{ transform: 'rotate(5deg)' }}
-            />
-          </div>
-          {/* Desktop: overlapping images */}
-          <div className="hidden md:block">
-            <img
-              src="/RIGHT.jpg"
-              alt=""
-              className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
-              style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
-            />
-            <img
-              src="/LEFT.jpg"
-              alt=""
-              className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
-              style={{ transform: 'rotate(5deg)' }}
-            />
-          </div>
+          {showFlowerImages ? (
+            <>
+              {/* Single flower for mobile */}
+              <div className="flex md:hidden justify-center">
+                <img
+                  src="/Flower.svg"
+                  alt=""
+                  className="w-48 h-auto"
+                  style={{ filter: 'brightness(0) saturate(100%) invert(10%) sepia(50%) saturate(2000%) hue-rotate(340deg) brightness(70%)', transform: 'rotate(15deg)' }}
+                />
+              </div>
+              {/* Single flower for desktop */}
+              <div className="hidden md:flex justify-center">
+                <img
+                  src="/Flower.svg"
+                  alt=""
+                  className="w-72 h-auto"
+                  style={{ filter: 'brightness(0) saturate(100%) invert(10%) sepia(50%) saturate(2000%) hue-rotate(340deg) brightness(70%)', transform: 'rotate(15deg)' }}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Mobile: side by side images */}
+              <div className="flex md:hidden gap-4 justify-center">
+                <img
+                  src="/RIGHT.jpg"
+                  alt=""
+                  className="w-36 h-auto object-cover shadow-lg"
+                  style={{ transform: 'rotate(-5deg)' }}
+                />
+                <img
+                  src="/LEFT.jpg"
+                  alt=""
+                  className="w-36 h-auto object-cover shadow-lg"
+                  style={{ transform: 'rotate(5deg)' }}
+                />
+              </div>
+              {/* Desktop: overlapping images */}
+              <div className="hidden md:block">
+                <img
+                  src="/RIGHT.jpg"
+                  alt=""
+                  className="w-72 h-auto object-cover absolute shadow-lg transition-all duration-500 ease-in-out group-hover:z-10 group-hover:translate-x-12 group-hover:translate-y-8"
+                  style={{ transform: 'rotate(-8deg)', top: '-20px', left: '-40px' }}
+                />
+                <img
+                  src="/LEFT.jpg"
+                  alt=""
+                  className="w-72 h-auto object-cover relative shadow-lg transition-all duration-500 ease-in-out group-hover:-translate-x-12 group-hover:-translate-y-8"
+                  style={{ transform: 'rotate(5deg)' }}
+                />
+              </div>
+            </>
+          )}
         </div>
         </div>
       </section>
