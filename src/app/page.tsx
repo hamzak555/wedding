@@ -21,6 +21,15 @@ interface Guest {
 }
 
 function HomeContent() {
+  const timelineEvents = [
+    { time: '3:45 PM', event: 'Mocktail Hour' },
+    { time: '5:00 PM', event: 'Nikkah' },
+    { time: '6:00 PM', event: 'Cake Cutting' },
+    { time: '7:00 PM', event: 'Dinner' },
+    { time: '8:00 PM', event: 'Party' },
+    { time: '10:00 PM', event: 'Send Off' },
+  ];
+
   // RSVP form state
   const [rsvpName, setRsvpName] = useState("");
   const [rsvpEmail, setRsvpEmail] = useState("");
@@ -451,14 +460,7 @@ function HomeContent() {
                 }}
               />
 
-              {[
-                { time: '3:00 PM', event: 'Mocktail Hour' },
-                { time: '4:00 PM', event: 'Nikkah' },
-                { time: '5:00 PM', event: 'Cake Cutting' },
-                { time: '6:00 PM', event: 'Dinner' },
-                { time: '8:00 PM', event: 'Party' },
-                { time: '10:00 PM', event: 'Send Off' },
-              ].map((item, index) => (
+              {timelineEvents.map((item, index) => (
                 <div key={index} className="grid grid-cols-[1fr_auto_1fr] items-center py-3">
                   {/* Time */}
                   <span className={`text-sm tracking-wide text-right pr-4 whitespace-nowrap ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums', transform: 'translateY(-2px)' }}>
@@ -482,14 +484,7 @@ function HomeContent() {
             {/* Time row */}
             <div className="flex justify-between mb-4">
               <div className="w-6" /> {/* Spacer for left icon */}
-              {[
-                { time: '3:00 PM', event: 'Mocktail Hour' },
-                { time: '4:00 PM', event: 'Nikkah' },
-                { time: '5:00 PM', event: 'Cake Cutting' },
-                { time: '6:00 PM', event: 'Dinner' },
-                { time: '8:00 PM', event: 'Party' },
-                { time: '10:00 PM', event: 'Send Off' },
-              ].map((item, index) => (
+              {timelineEvents.map((item, index) => (
                 <span key={index} className={`text-sm tracking-wide text-center flex-1 ${playfair.className}`} style={{ color: '#e8e4dc', fontVariantNumeric: 'lining-nums' }}>
                   {item.time}
                 </span>
@@ -516,14 +511,7 @@ function HomeContent() {
                 <div className="absolute left-0 right-0 h-[2px]" style={{ backgroundColor: '#e8e4dc' }} />
 
                 <div className="flex justify-between w-full">
-                  {[
-                    { time: '3:00 PM', event: 'Mocktail Hour' },
-                    { time: '4:00 PM', event: 'Nikkah' },
-                    { time: '5:00 PM', event: 'Cake Cutting' },
-                    { time: '6:00 PM', event: 'Dinner' },
-                    { time: '8:00 PM', event: 'Party' },
-                    { time: '10:00 PM', event: 'Send Off' },
-                  ].map((item, index) => (
+                  {timelineEvents.map((item, index) => (
                     <div key={index} className="flex-1 flex justify-center">
                       <div className="w-3 h-3 rounded-full relative z-10" style={{ backgroundColor: '#e8e4dc' }} />
                     </div>
@@ -546,14 +534,7 @@ function HomeContent() {
             {/* Event names row */}
             <div className="flex justify-between mt-4">
               <div className="w-6" /> {/* Spacer for left icon */}
-              {[
-                { time: '3:00 PM', event: 'Mocktail Hour' },
-                { time: '4:00 PM', event: 'Nikkah' },
-                { time: '5:00 PM', event: 'Cake Cutting' },
-                { time: '6:00 PM', event: 'Dinner' },
-                { time: '8:00 PM', event: 'Party' },
-                { time: '10:00 PM', event: 'Send Off' },
-              ].map((item, index) => (
+              {timelineEvents.map((item, index) => (
                 <span key={index} className="text-2xl lg:text-3xl text-center flex-1" style={{ fontFamily: 'var(--font-diploma-script)', color: '#e8e4dc' }}>
                   {item.event}
                 </span>
@@ -613,7 +594,7 @@ function HomeContent() {
                   </span>
                 </div>
                 <p className={`text-base leading-relaxed max-w-lg mt-10 ${playfair.className}`} style={{ color: '#7d1b1b', fontVariantNumeric: 'lining-nums' }}>
-                  Our ceremony will begin at 4:00 PM at R Garden Boutique located at{' '}
+                  Our ceremony will begin at 5:00 PM at R Garden Boutique located at{' '}
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=2120+Rosebank+Road,+Pickering,+ON,+L1X+0A1"
                     target="_blank"
@@ -621,7 +602,7 @@ function HomeContent() {
                     className="underline hover:opacity-70"
                   >
                     2120 Rosebank Road, Pickering, ON, L1X 0A1
-                  </a>. We kindly ask guests to arrive by 3:00 PM for mocktail hour.
+                  </a>. We kindly ask guests to arrive by 3:45 PM for mocktail hour.
                 </p>
               </div>
 
